@@ -63,7 +63,7 @@ export function LabReport({ analysis, analyzedAt }: { analysis: LabAnalysis; ana
           <DifficultyBar label="Теорія" value={analysis.theory_difficulty} />
           <DifficultyBar label="Захист" value={analysis.defense_difficulty} />
         </div>
-        <div className="flex items-center gap-3 rounded-lg border border-line bg-sunken px-4 py-3 sm:flex-col sm:items-start sm:justify-center sm:gap-0.5">
+        <div className="flex items-center gap-3 rounded-lg groove px-4 py-3 sm:flex-col sm:items-start sm:justify-center sm:gap-0.5">
           <Clock className="size-4 text-subtle sm:mb-1" />
           <span className="tabular text-xl font-medium">~{analysis.estimated_hours} год</span>
           <span className="text-2xs text-subtle">орієнтовний час</span>

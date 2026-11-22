@@ -9,6 +9,7 @@ import type { User } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Logo, LogoMark } from "@/components/brand/logo";
 import { Button } from "@/components/ui/button";
+import { fadeUp, stagger } from "@/lib/motion";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -30,44 +31,68 @@ const LOG_STEPS = [
   { title: "Відповідь збережено", meta: "4,8 с" },
 ];
 
+const STEP_GAP = 0.45;
+const STEPS_START = 0.9;
+
 function ShowcasePanel() {
+  const done = STEPS_START + LOG_STEPS.length * STEP_GAP;
   return (
-    <div className="relative hidden flex-col overflow-hidden rounded-[20px] bg-sunken lg:flex">
+    <motion.div
+      initial={{ opacity: 0, x: -60 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.9, ease }}
+      className="desk relative hidden flex-col overflow-hidden rounded-[20px] lg:flex"
+    >
       <div className="p-8">
         <Link to="/" className="inline-flex rounded-md"><Logo size={22} /></Link>
       </div>
       <div className="mt-auto p-8">
-        <p className="max-w-[440px] text-[28px] leading-[34px] font-medium tracking-[-0.025em]">Асистент відповідає з ваших лекцій і показує кожен крок.</p>
-        <div className="mt-8 rounded-lg stock p-5">
+        <motion.p initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, ease, delay: 0.25 }} className="max-w-[440px] text-[28px] leading-[34px] font-medium tracking-[-0.025em]">
+          Асистент відповідає з ваших лекцій і показує кожен крок.
+        </motion.p>
+        <motion.div initial={{ opacity: 0, y: 56, rotate: -5, scale: 0.92 }} animate={{ opacity: 1, y: 0, rotate: 0, scale: 1 }} transition={{ duration: 0.9, ease, delay: 0.5 }} className="mt-8 rounded-lg stock p-5">
           <div className="flex items-center gap-2 text-sm">
-            <Check className="size-4 text-success" strokeWidth={2.5} />
-            <span className="font-medium">Опрацьовано</span>
+            <motion.span initial={{ scale: 0, rotate: -90 }} animate={{ scale: 1, rotate: 0 }} transition={{ delay: done, duration: 0.5, ease: [0.2, 0.9, 0.3, 1.4] }} className="inline-flex">
+              <Check className="size-4 text-success" strokeWidth={2.5} />
+            </motion.span>
+            <motion.span initial={{ opacity: 0.35 }} animate={{ opacity: 1 }} transition={{ delay: done, duration: 0.4 }} className="font-medium">Опрацьовано</motion.span>
             <span className="tabular ml-auto text-xs text-subtle">Машинне навчання · Learning rate</span>
           </div>
           <ol className="mt-4 space-y-3 border-t border-line pt-4">
-            {LOG_STEPS.map((s) => (
-              <li key={s.title} className="flex items-start gap-3">
-                <span className="mt-1 size-1.5 shrink-0 rounded-full bg-accent" />
+            {LOG_STEPS.map((s, i) => (
+              <motion.li
+                key={s.title}
+                initial={{ opacity: 0, x: -36 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, ease, delay: STEPS_START + i * STEP_GAP }}
+                className="flex items-start gap-3"
+              >
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.4, ease: [0.2, 0.9, 0.3, 1.5], delay: STEPS_START + i * STEP_GAP + 0.2 }}
+                  className="mt-1 size-1.5 shrink-0 rounded-full bg-coral-strong"
+                />
                 <span className="min-w-0">
                   <span className="block text-sm leading-5">{s.title}</span>
                   <span className="block text-xs text-subtle">{s.meta}</span>
                 </span>
-              </li>
+              </motion.li>
             ))}
           </ol>
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
 function IconInput({ icon, invalid, right, ...props }: InputHTMLAttributes<HTMLInputElement> & { icon: ReactNode; invalid?: boolean; right?: ReactNode }) {
   return (
     <div className="group relative">
-      <span className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-subtle transition-colors group-focus-within:text-accent [&_svg]:size-4">{icon}</span>
+      <span className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-subtle transition-colors group-focus-within:text-fg [&_svg]:size-4">{icon}</span>
       <input
         aria-invalid={invalid || undefined}
-        className="h-12 short:h-10 w-full rounded-[8px] border border-line bg-surface pr-11 pl-10 text-[16px] text-fg transition-[border-color] duration-150 placeholder:text-subtle hover:border-line-hover focus:border-accent aria-[invalid=true]:border-danger"
+        className="h-12 short:h-10 w-full rounded-md border border-line bg-surface pr-11 pl-10 text-[16px] text-fg transition-[border-color,box-shadow] duration-150 placeholder:text-subtle hover:border-line-hover focus:border-subtle focus:ring-3 focus:ring-accent/10 focus-visible:outline-none aria-[invalid=true]:border-danger"
         {...props}
       />
       {right && <span className="absolute top-1/2 right-2 -translate-y-1/2">{right}</span>}
@@ -156,22 +181,24 @@ export function LoginPage() {
             <Link to="/" className="rounded-md lg:hidden" aria-label="AI Workspace"><LogoMark size={24} /></Link>
           </div>
           <div className="relative flex flex-1 items-center justify-center px-4 pb-10 short:pb-4 sm:px-8">
-            <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease }} className="w-full max-w-[400px]">
+            <motion.div variants={stagger(0.1)} initial="hidden" animate="show" className="w-full max-w-[400px]">
+              <motion.div variants={fadeUp}>
               <AnimatePresence mode="wait" initial={false}>
-                <motion.div key={mode} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.25, ease }}>
+                <motion.div key={mode} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }} transition={{ duration: 0.4, ease }}>
                   <h1 className="text-[32px] leading-[38px] font-medium tracking-[-0.03em] short:text-2xl">{mode === "login" ? "З поверненням" : "Створіть свій простір"}</h1>
                   <p className="mt-2 text-[15px] text-muted short:mt-1 short:text-sm">{mode === "login" ? "Увійдіть, щоб продовжити навчання й проєкти." : "Хвилина — і можна додавати перший предмет."}</p>
                 </motion.div>
               </AnimatePresence>
+              </motion.div>
 
-              <div role="tablist" aria-label="Режим" className="relative mt-7 grid grid-cols-2 rounded-[10px] border border-line bg-sunken p-1 short:mt-4">
+              <motion.div variants={fadeUp} role="tablist" aria-label="Режим" className="groove relative mt-7 grid grid-cols-2 rounded-[10px] p-1 short:mt-4">
                 {(["login", "register"] as const).map((m) => (
                   <Link key={m} to={m === "login" ? "/login" : "/register"} replace role="tab" aria-selected={mode === m} className={cn("relative flex h-9 items-center justify-center rounded-lg text-sm font-medium transition-colors", mode === m ? "text-fg" : "text-muted hover:text-fg")}>
-                    {mode === m && <motion.span layoutId="auth-tab" transition={{ duration: 0.28, ease }} className="absolute inset-0 rounded-[7px] bg-surface shadow-[0_1px_2px_rgb(0_0_0/0.08)]" />}
+                    {mode === m && <motion.span layoutId="auth-tab" transition={{ duration: 0.45, ease }} className="absolute inset-0 rounded-[7px] stock" />}
                     <span className="relative">{m === "login" ? "Вхід" : "Реєстрація"}</span>
                   </Link>
                 ))}
-              </div>
+              </motion.div>
 
               {params.get("error") === "google" && (
                 <p role="alert" className="mt-4 flex items-center gap-2 rounded-[8px] border border-danger/25 bg-danger-soft px-3 py-2.5 text-sm"><AlertCircle className="size-4 text-danger" />Не вдалося увійти через Google. Спробуйте ще раз.</p>
@@ -183,7 +210,7 @@ export function LoginPage() {
                     type="button"
                     disabled={googleBusy}
                     onClick={() => { setGoogleBusy(true); window.location.href = "/api/auth/google/start"; }}
-                    className="mt-5 flex h-12 short:h-10 short:mt-3 w-full items-center justify-center gap-2.5 rounded-[8px] border border-line bg-surface text-[15px] font-medium transition-[border-color,background-color] hover:border-line-hover hover:bg-hover disabled:opacity-60"
+                    className="stock stock-hover mt-5 flex h-12 short:h-10 short:mt-3 w-full items-center justify-center gap-2.5 rounded-md text-[15px] font-medium disabled:opacity-60"
                   >
                     <GoogleIcon /> Продовжити з Google
                   </button>
@@ -191,7 +218,7 @@ export function LoginPage() {
                 </>
               )}
 
-              <form onSubmit={onSubmit} noValidate className={cn("space-y-4 short:space-y-2.5", !config.data?.google_enabled && "mt-6 short:mt-4")}>
+              <motion.form variants={fadeUp} onSubmit={onSubmit} noValidate className={cn("space-y-4 short:space-y-2.5", !config.data?.google_enabled && "mt-6 short:mt-4")}>
                 <AnimatePresence initial={false}>
                   {mode === "register" && (
                     <motion.div key="name" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.25, ease }} className="overflow-hidden">
@@ -244,14 +271,14 @@ export function LoginPage() {
                   {mode === "login" ? "Увійти" : "Створити акаунт"}
                   {!submit.isPending && <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5" />}
                 </Button>
-              </form>
+              </motion.form>
 
-              <p className="mt-6 text-center text-sm text-muted short:mt-3">
+              <motion.p variants={fadeUp} className="mt-6 text-center text-sm text-muted short:mt-3">
                 {mode === "login" ? "Ще немає акаунта? " : "Вже маєте акаунт? "}
                 <Link to={mode === "login" ? "/register" : "/login"} replace className="font-medium text-accent hover:underline">
                   {mode === "login" ? "Зареєструватися" : "Увійти"}
                 </Link>
-              </p>
+              </motion.p>
             </motion.div>
           </div>
         </div>

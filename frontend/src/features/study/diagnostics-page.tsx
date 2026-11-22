@@ -198,7 +198,7 @@ function QuestionCard({ diag, q, onNext, isLast }: { diag: Diagnostic; q: Questi
       {q.kind === "open" && (
         <div className="mt-5 space-y-3">
           {answered ? (
-            <div className="rounded-lg border border-line bg-sunken px-3.5 py-2.5 text-sm whitespace-pre-wrap">{q.user_answer}</div>
+            <div className="rounded-lg groove px-3.5 py-2.5 text-sm whitespace-pre-wrap">{q.user_answer}</div>
           ) : (
             <Textarea value={text} onChange={(e) => setText(e.target.value)} rows={6} maxLength={8000} disabled={busy} placeholder="Ваша відповідь…" aria-label="Відповідь" />
           )}
