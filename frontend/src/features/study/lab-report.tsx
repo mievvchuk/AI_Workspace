@@ -48,7 +48,7 @@ function ListBlock({ title, items, empty }: { title: string; items: string[]; em
 export function LabReport({ analysis, analyzedAt }: { analysis: LabAnalysis; analyzedAt: string | null }) {
   const [showQuestions, setShowQuestions] = useState(false);
   return (
-    <motion.div variants={stagger(0.06)} initial="hidden" animate="show" className="space-y-6">
+    <motion.div variants={stagger(0.12)} initial="hidden" animate="show" className="space-y-6">
       <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-2">
         <h3 className="text-sm font-medium">Звіт аналізу</h3>
         <Tooltip content="Показники згенеровані моделлю на основі опису та матеріалів, це не об'єктивне вимірювання">
@@ -63,7 +63,7 @@ export function LabReport({ analysis, analyzedAt }: { analysis: LabAnalysis; ana
           <DifficultyBar label="Теорія" value={analysis.theory_difficulty} />
           <DifficultyBar label="Захист" value={analysis.defense_difficulty} />
         </div>
-        <div className="flex items-center gap-3 rounded-lg border border-line bg-sunken px-4 py-3 sm:flex-col sm:items-start sm:justify-center sm:gap-0.5">
+        <div className="flex items-center gap-3 rounded-lg groove px-4 py-3 sm:flex-col sm:items-start sm:justify-center sm:gap-0.5">
           <Clock className="size-4 text-subtle sm:mb-1" />
           <span className="tabular text-xl font-medium">~{analysis.estimated_hours} год</span>
           <span className="text-2xs text-subtle">орієнтовний час</span>

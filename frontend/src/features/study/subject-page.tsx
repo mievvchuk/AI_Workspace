@@ -24,7 +24,7 @@ function Stat({ label, value, to }: { label: string; value: number | string; to?
       <span className="text-xs text-muted">{label}</span>
     </>
   );
-  return to ? <Link to={to} className="flex flex-col rounded-lg border border-line bg-surface px-3.5 py-2.5 transition-colors hover:border-line-hover">{body}</Link> : <div className="flex flex-col rounded-lg border border-line bg-surface px-3.5 py-2.5">{body}</div>;
+  return to ? <Link to={to} className="flex flex-col rounded-lg stock stock-hover px-3.5 py-2.5">{body}</Link> : <div className="flex flex-col rounded-lg stock px-3.5 py-2.5">{body}</div>;
 }
 
 function Overview({ subjectId }: { subjectId: string }) {
@@ -46,7 +46,7 @@ function Overview({ subjectId }: { subjectId: string }) {
       {!!labs.data?.filter((l) => l.status !== "done").length && (
         <motion.section variants={fadeUp}>
           <h3 className="mb-2 text-sm font-medium text-muted">Незавершені лабораторні</h3>
-          <ul className="divide-y divide-line rounded-lg border border-line bg-surface">
+          <ul className="divide-y divide-line rounded-lg stock">
             {labs.data.filter((l) => l.status !== "done").slice(0, 5).map((l) => (
               <li key={l.id}>
                 <Link to={`?tab=labs&lab=${l.id}`} className="flex items-center gap-2.5 px-3 py-2.5 text-sm hover:bg-hover/60">
@@ -72,7 +72,7 @@ function DiagnosticsTab({ subjectId }: { subjectId: string }) {
     <div className="space-y-3">
       <Button variant="outline" size="sm" icon={<Plus className="size-3.5" />} onClick={() => navigate(`/study/diagnostics/new?subject=${subjectId}`)}>Нова діагностика</Button>
       {diags.data?.length ? (
-        <ul className="divide-y divide-line rounded-lg border border-line bg-surface">
+        <ul className="divide-y divide-line rounded-lg stock">
           {diags.data.map((d) => (
             <li key={d.id}>
               <Link to={`/study/diagnostics/${d.id}`} className="flex items-center gap-3 px-3 py-2.5 hover:bg-hover/60">
@@ -106,7 +106,7 @@ function DefenseTab({ subjectId }: { subjectId: string }) {
             <Badge tone="accent">AI-оцінка захисту {l.analysis!.defense_difficulty}/10</Badge>
             <Button size="sm" variant="ghost" onClick={() => navigate(`/study/diagnostics/new?subject=${subjectId}&topic=${encodeURIComponent(l.title)}`)}>Потренуватися</Button>
           </div>
-          <ol className="space-y-1.5 rounded-lg border border-line bg-surface px-3.5 py-3">
+          <ol className="space-y-1.5 rounded-lg stock px-3.5 py-3">
             {l.analysis!.defense_questions.map((q, i) => <li key={q} className="flex gap-2.5 text-sm"><span className="tabular w-4 shrink-0 text-subtle">{i + 1}.</span>{q}</li>)}
           </ol>
           {l.analysis!.required_knowledge.length > 0 && <p className="text-xs text-muted">Повторити: {l.analysis!.required_knowledge.join(", ")}</p>}

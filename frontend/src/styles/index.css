@@ -1,5 +1,5 @@
 @import "tailwindcss";
-/* The landing page uses the taste-skill system's own grid classes; keep Tailwind from generating look-alikes. */
+/* The landing page (Coral) brings its own stylesheet; keep Tailwind from scanning its markup. */
 @source not "../features/landing/landing.html";
 @source not "../../public";
 @source not "../../.taste-skill";
@@ -12,60 +12,82 @@
 
 /* ------------------------------------------------------------------
    Design tokens. Components use only semantic tokens, never raw colors.
-   Neutral base is cool paper-grey; one accent (cobalt).
+   Theme: Hallmark Coral (design-variants/04-coral). Warm grey paper, cotton
+   stock lit from the left, an ink board for the primary action, coral kept
+   for focus, link underlines and the one settled state.
    ------------------------------------------------------------------ */
 :root {
-  /* Palette dealt by taste-skill: cool-grey-cobalt. Paper-grey ground, near-black ink, one cobalt accent. */
-  --background: #eef0f3;
-  --surface: #ffffff;
-  --surface-elevated: #ffffff;
-  --surface-sunken: #e2e5ea;
-  --surface-hover: #e7e9ed;
-  --foreground: #0b0c0e;
-  --foreground-muted: #4a505a;
-  --foreground-subtle: #5d6470;
-  --border: #d5d9df;
-  --border-hover: #b9bfc8;
-  --accent: #1f2de6;
-  --accent-hover: #1824bf;
-  --accent-soft: #1f2de614;
-  --accent-foreground: #ffffff;
-  --success: #12733a;
-  --success-soft: #12733a14;
-  --warning: #9a5200;
-  --warning-soft: #9a520014;
-  --destructive: #c5221f;
-  --destructive-soft: #c5221f12;
-  --focus-ring: #1f2de6;
-  --shadow-color: 11 12 14;
-  --code-bg: #e7e9ed;
+  --background: oklch(97% 0.006 55);
+  --surface: oklch(98.8% 0.0045 80);
+  --surface-elevated: oklch(98.8% 0.0045 80);
+  --surface-sunken: oklch(94.3% 0.008 64);
+  --surface-hover: oklch(94.5% 0.007 55);
+  --foreground: oklch(21% 0.012 38);
+  --foreground-muted: oklch(36% 0.013 42);
+  --foreground-subtle: oklch(47% 0.013 45);
+  --border: oklch(87% 0.009 55);
+  --border-hover: oklch(72% 0.012 52);
+  --accent: oklch(22% 0.011 40);
+  --accent-hover: oklch(31% 0.013 40);
+  --accent-soft: oklch(22% 0.011 40 / 0.07);
+  --accent-foreground: oklch(96.5% 0.006 70);
+  --coral: oklch(74% 0.125 30);
+  --coral-strong: oklch(54% 0.165 29);
+  --paid: oklch(55.5% 0.15 33);
+  --success: oklch(47% 0.11 150);
+  --success-soft: oklch(47% 0.11 150 / 0.09);
+  --warning: oklch(52% 0.12 65);
+  --warning-soft: oklch(52% 0.12 65 / 0.1);
+  --destructive: oklch(50% 0.19 27);
+  --destructive-soft: oklch(50% 0.19 27 / 0.08);
+  --focus-ring: oklch(54% 0.17 30);
+  --shadow-color: 74 58 46;
+  --code-bg: oklch(94.5% 0.007 55);
+  --desk: oklch(94.3% 0.008 64);
+  --tex-cotton: url("/coral/cotton.svg");
+  --tex-desk: url("/coral/felt.svg");
+  --edge-stock: inset 0 1px 0 oklch(100% 0.005 80 / 0.9), inset 0 -1px 0 oklch(32% 0.03 50 / 0.07), 0 0 0 0.5px oklch(32% 0.03 50 / 0.22), 0 1px 0 oklch(32% 0.03 50 / 0.12);
+  --cast-stock: 6px 5px 10px -6px oklch(32% 0.03 50 / 0.3);
+  --cast-stock-lift: 12px 10px 18px -8px oklch(32% 0.03 50 / 0.3);
+  --press-groove: inset 1px 1.5px 2px oklch(32% 0.03 50 / 0.16), inset -1px -1px 0 oklch(100% 0.005 80 / 0.9), 0 0 0 0.5px oklch(32% 0.03 50 / 0.2);
   color-scheme: light;
 }
 
+/* Dark is derived from the Coral board, never inverted: warm charcoal stock, paper-coloured type. */
 [data-theme="dark"] {
-  --background: #0b0c0e;
-  --surface: #131416;
-  --surface-elevated: #17181a;
-  --surface-sunken: #08090a;
-  --surface-hover: #1d1e21;
-  --foreground: #eef0f3;
-  --foreground-muted: #b4b8bf;
-  --foreground-subtle: #8e9299;
-  --border: #25272b;
-  --border-hover: #363940;
-  --accent: #5c9dff;
-  --accent-hover: #85b6ff;
-  --accent-soft: #5c9dff1c;
-  --accent-foreground: #0b0c0e;
-  --success: #5fd38d;
-  --success-soft: #5fd38d1a;
-  --warning: #f0b45a;
-  --warning-soft: #f0b45a1a;
-  --destructive: #ff7b72;
-  --destructive-soft: #ff7b721a;
-  --focus-ring: #5c9dff;
+  --background: oklch(18.5% 0.01 40);
+  --surface: oklch(22.5% 0.011 40);
+  --surface-elevated: oklch(25% 0.012 40);
+  --surface-sunken: oklch(16% 0.009 40);
+  --surface-hover: oklch(27% 0.012 40);
+  --foreground: oklch(95% 0.006 70);
+  --foreground-muted: oklch(82% 0.01 60);
+  --foreground-subtle: oklch(70% 0.012 55);
+  --border: oklch(31% 0.012 42);
+  --border-hover: oklch(46% 0.014 45);
+  --accent: oklch(95% 0.006 70);
+  --accent-hover: oklch(88% 0.008 65);
+  --accent-soft: oklch(95% 0.006 70 / 0.08);
+  --accent-foreground: oklch(21% 0.012 38);
+  --coral: oklch(76% 0.12 30);
+  --coral-strong: oklch(76% 0.12 30);
+  --paid: oklch(74% 0.13 33);
+  --success: oklch(76% 0.12 150);
+  --success-soft: oklch(76% 0.12 150 / 0.1);
+  --warning: oklch(80% 0.11 75);
+  --warning-soft: oklch(80% 0.11 75 / 0.1);
+  --destructive: oklch(72% 0.15 27);
+  --destructive-soft: oklch(72% 0.15 27 / 0.1);
+  --focus-ring: oklch(76% 0.12 30);
   --shadow-color: 0 0 0;
-  --code-bg: #101113;
+  --code-bg: oklch(16% 0.009 40);
+  --desk: oklch(16% 0.009 40);
+  --tex-cotton: none;
+  --tex-desk: none;
+  --edge-stock: inset 0 1px 0 oklch(100% 0 0 / 0.05), 0 0 0 0.5px oklch(0% 0 0 / 0.5), 0 1px 0 oklch(0% 0 0 / 0.3);
+  --cast-stock: 6px 5px 12px -6px oklch(0% 0 0 / 0.55);
+  --cast-stock-lift: 12px 10px 20px -8px oklch(0% 0 0 / 0.55);
+  --press-groove: inset 1px 1.5px 2px oklch(0% 0 0 / 0.45), 0 0 0 0.5px oklch(0% 0 0 / 0.5);
   color-scheme: dark;
 }
 
@@ -91,9 +113,13 @@
   --color-danger: var(--destructive);
   --color-danger-soft: var(--destructive-soft);
   --color-ring: var(--focus-ring);
+  --color-coral: var(--coral);
+  --color-coral-strong: var(--coral-strong);
+  --color-paid: var(--paid);
+  --color-desk: var(--desk);
 
-  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", "Cascadia Code", Consolas, monospace;
+  --font-sans: "Onest", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", "Cascadia Code", Consolas, monospace;
 
   /* Type scale: tight UI sizes, comfortable reading size for AI answers */
   --text-2xs: 12px;
@@ -117,11 +143,11 @@
 
   --radius-sm: 6px;
   --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 20px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
 
-  --shadow-pop: 0 1px 2px rgb(var(--shadow-color) / 0.06), 0 8px 24px -6px rgb(var(--shadow-color) / 0.18);
-  --shadow-float: 0 1px 1px rgb(var(--shadow-color) / 0.04), 0 4px 16px -4px rgb(var(--shadow-color) / 0.14);
+  --shadow-pop: var(--edge-stock), 10px 12px 28px -10px rgb(var(--shadow-color) / 0.32);
+  --shadow-float: var(--edge-stock), var(--cast-stock);
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -178,6 +204,13 @@
   button { cursor: pointer; }
   button:disabled { cursor: not-allowed; }
   input, textarea, select, button { font: inherit; color: inherit; }
+  /* Browser autofill keeps the Coral field colours instead of its own blue-grey. */
+  input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, textarea:-webkit-autofill, select:-webkit-autofill {
+    -webkit-text-fill-color: var(--foreground);
+    -webkit-box-shadow: 0 0 0 1000px var(--surface) inset;
+    caret-color: var(--foreground);
+    transition: background-color 600000s 0s, color 600000s 0s;
+  }
   ::-webkit-scrollbar { width: 10px; height: 10px; }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 8px; border: 3px solid transparent; background-clip: padding-box; }
   ::-webkit-scrollbar-thumb:hover { background-color: var(--border-hover); }
@@ -249,13 +282,30 @@
   --brand-gradient: linear-gradient(120deg, var(--brand-1), var(--brand-2) 55%, var(--brand-3));
   --glass-bg: var(--surface);
   --glass-border: var(--border);
-  --glow: 0 0 0 1px var(--border-hover), 0 4px 14px -6px rgb(var(--shadow-color) / 0.12);
+  --glow: var(--edge-stock), var(--cast-stock-lift);
 }
 [data-theme="dark"] {
   --glass-bg: var(--surface);
   --glass-border: var(--border);
-  --glow: 0 0 0 1px var(--border-hover), 0 4px 14px -6px rgb(0 0 0 / 0.5);
+  --glow: var(--edge-stock), var(--cast-stock-lift);
 }
+
+/* Coral stock: a cotton sheet lit from the left, casting to the right. */
+@utility stock {
+  background-color: var(--surface);
+  background-image: linear-gradient(100deg, var(--surface), transparent 45%), var(--tex-cotton);
+  box-shadow: var(--edge-stock), var(--cast-stock);
+}
+@utility stock-hover {
+  transition: transform 220ms var(--ease-out), box-shadow 220ms var(--ease-out);
+  &:hover { transform: translateY(-1px); box-shadow: var(--edge-stock), var(--cast-stock-lift); }
+  &:active { transform: translateY(1px); box-shadow: var(--edge-stock); }
+}
+@utility desk {
+  background-color: var(--desk);
+  background-image: radial-gradient(90% 120% at 0% 30%, var(--surface), transparent 62%), var(--tex-desk);
+}
+@utility groove { background: var(--surface-sunken); box-shadow: var(--press-groove); }
 
 @utility text-brand { color: var(--accent); }
 @utility text-brand-animated { color: var(--accent); }
@@ -335,13 +385,14 @@
   }
   .floaty { animation: float-y var(--d, 7s) ease-in-out infinite; animation-delay: var(--delay, 0s); will-change: transform; }
 
-  .emoji-tile { background: var(--surface-sunken); border: 1px solid var(--border); }
+  .emoji-tile { background: var(--surface); box-shadow: var(--edge-stock); }
 
   .logo-animated .logo-star { transform-box: fill-box; transform-origin: center; animation: logo-star 3.2s ease-in-out infinite; }
   .logo-animated .logo-glow { transform-box: fill-box; transform-origin: center; animation: logo-pulse 2.4s ease-in-out infinite; }
 
   /* app pages sit on the flat ground */
   .app-ambient { background: var(--background); }
+  .sidebar-desk { background-color: var(--desk); background-image: var(--tex-desk); }
 }
 
 @media (prefers-reduced-motion: reduce) {

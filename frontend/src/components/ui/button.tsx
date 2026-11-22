@@ -7,15 +7,15 @@ type Variant = "primary" | "secondary" | "ghost" | "danger" | "outline";
 type Size = "sm" | "md" | "lg";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-accent text-on-accent shadow-[0_1px_2px_rgb(var(--shadow-color)/0.12)] hover:bg-accent-hover disabled:bg-hover disabled:text-subtle disabled:shadow-none disabled:opacity-100",
+  primary: "bg-accent text-on-accent shadow-[var(--cast-stock)] hover:bg-accent-hover disabled:bg-hover disabled:text-subtle disabled:shadow-none disabled:opacity-100",
   secondary: "bg-hover text-fg hover:bg-line",
-  outline: "border border-line bg-surface text-fg hover:border-line-hover hover:bg-hover",
+  outline: "stock text-fg hover:shadow-[var(--edge-stock),var(--cast-stock-lift)]",
   ghost: "text-muted hover:bg-hover hover:text-fg",
   danger: "bg-danger text-white hover:opacity-90",
 };
 
 const sizes: Record<Size, string> = {
-  sm: "h-8 px-3 text-sm gap-1.5 rounded-md",
+  sm: "h-8 px-3 text-sm gap-1.5 rounded-sm",
   md: "h-9 px-3.5 text-sm gap-2 rounded-md",
   lg: "h-11 px-5 text-base gap-2 rounded-lg",
 };
@@ -71,7 +71,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
       className={cn(
         "inline-flex shrink-0 items-center justify-center rounded-md transition-[background-color,color,transform] duration-150 active:scale-95 disabled:opacity-40 disabled:active:scale-100",
         variant === "ghost" && "text-muted hover:bg-hover hover:text-fg",
-        variant === "outline" && "border border-line text-muted hover:border-line-hover hover:text-fg",
+        variant === "outline" && "stock text-muted hover:text-fg",
         variant === "primary" && "bg-accent text-on-accent hover:bg-accent-hover disabled:bg-hover disabled:text-subtle disabled:opacity-100",
         iconSizes[size],
         className,

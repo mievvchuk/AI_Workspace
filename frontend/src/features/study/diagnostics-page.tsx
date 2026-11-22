@@ -14,6 +14,7 @@ import { Badge, ErrorState, Notice, Progress, Skeleton } from "@/components/ui/f
 import { Field, Input, Segmented, Select, Textarea } from "@/components/ui/field";
 import { AIProcessingPanel } from "@/components/ai/process-panel";
 import { useAITask } from "@/features/ai/use-ai-task";
+import { CountUp } from "@/components/ui/count-up";
 
 const DIFF_LABEL: Record<string, string> = { easy: "легке", medium: "середнє", hard: "складне", adaptive: "адаптивне" };
 
@@ -59,7 +60,7 @@ export function DiagnosticSetup() {
           {usage && !usage.ai_configured && <Notice>AI-провайдер не налаштовано — діагностика недоступна.</Notice>}
           {started ? (
             <motion.div key="run" initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={t(dur.dialog)} className="space-y-3">
-              <div className="flex items-center gap-3 rounded-lg border border-line bg-surface px-3.5 py-2.5">
+              <div className="flex items-center gap-3 rounded-lg stock px-3.5 py-2.5">
                 <ClipboardCheck className="size-4 shrink-0 text-subtle" />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium">{topic}</p>
@@ -197,7 +198,7 @@ function QuestionCard({ diag, q, onNext, isLast }: { diag: Diagnostic; q: Questi
       {q.kind === "open" && (
         <div className="mt-5 space-y-3">
           {answered ? (
-            <div className="rounded-lg border border-line bg-sunken px-3.5 py-2.5 text-sm whitespace-pre-wrap">{q.user_answer}</div>
+            <div className="rounded-lg groove px-3.5 py-2.5 text-sm whitespace-pre-wrap">{q.user_answer}</div>
           ) : (
             <Textarea value={text} onChange={(e) => setText(e.target.value)} rows={6} maxLength={8000} disabled={busy} placeholder="Ваша відповідь…" aria-label="Відповідь" />
           )}
@@ -235,11 +236,11 @@ function Results({ diag }: { diag: Diagnostic }) {
       ] as const)
     : [];
   return (
-    <motion.div variants={stagger(0.06)} initial="hidden" animate="show" className="space-y-8">
+    <motion.div variants={stagger(0.12)} initial="hidden" animate="show" className="space-y-8">
       <motion.div variants={fadeUp} className="flex items-end gap-5">
         <div>
           <p className="text-xs text-muted">Підсумкова оцінка</p>
-          <p className={cn("tabular text-[44px] leading-none font-medium tracking-tight", tone)}>{score}%</p>
+          <p className={cn("tabular text-[44px] leading-none font-medium tracking-tight", tone)}><CountUp value={score} />%</p>
         </div>
         <div className="flex-1 pb-1.5">
           <Progress value={score} tone={score >= 75 ? "success" : score >= 50 ? "warning" : "danger"} className="h-1.5" label="Підсумкова оцінка" />

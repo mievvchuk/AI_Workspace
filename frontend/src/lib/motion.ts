@@ -15,11 +15,23 @@ export const dur = {
 export const t = (duration: number, extra: Transition = {}): Transition => ({ duration, ease, ...extra });
 
 export const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 6 },
-  show: { opacity: 1, y: 0, transition: t(dur.page) },
+  hidden: { opacity: 0, y: 32 },
+  show: { opacity: 1, y: 0, transition: t(0.75) },
 };
 
-export const stagger = (step = 0.035): Variants => ({
+/** Coral: a sheet of stock laid on the desk, landing from a slight tilt. */
+export const deal: Variants = {
+  hidden: { opacity: 0, y: 56, rotate: -5, scale: 0.92 },
+  show: { opacity: 1, y: 0, rotate: 0, scale: 1, transition: t(0.9) },
+};
+
+/** A route's content settling in. */
+export const pageIn = {
+  initial: { opacity: 0, y: 28 },
+  animate: { opacity: 1, y: 0, transition: t(0.6) },
+} as const;
+
+export const stagger = (step = 0.1): Variants => ({
   hidden: {},
   show: { transition: { staggerChildren: step } },
 });

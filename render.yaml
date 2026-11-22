@@ -1,0 +1,22 @@
+# Render Blueprint: one Docker web service with a persistent disk for SQLite and uploads.
+# Secrets are left blank here (sync: false); Render asks for them when the Blueprint is created.
+services:
+  - type: web
+    name: ai-workspace
+    runtime: docker
+    plan: starter
+    region: frankfurt
+    branch: main
+    healthCheckPath: /api/health
+    autoDeploy: true
+    disk:
+      name: data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NVIDIA_API_KEY
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
