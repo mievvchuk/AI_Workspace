@@ -42,7 +42,7 @@ npm run dev   # http://localhost:5173, /api проксіюється на :8000
 
 ## Деплой (Vercel)
 
-Фронтенд збирається в статику, а FastAPI працює як Vercel Function (`api/index.py`) на тому ж домені, тож cookies, CSRF і Google OAuth працюють без CORS. Постійного диска на Vercel немає, тому:
+Один проєкт Vercel з двома сервісами (`vercel.json` → `services`): `frontend/` (Vite, статика з SPA-fallback) і `backend/` (FastAPI, `app.main:app`). Запити `/api/*` йдуть у бекенд, решта у фронтенд, усе на одному домені, тож cookies, CSRF і Google OAuth працюють без CORS. Під час імпорту оберіть варіант із сервісами (Services), а не окремий застосунок. Постійного диска на Vercel немає, тому:
 
 - **База:** Postgres з Neon (Vercel Marketplace → Neon, безкоштовний тариф). Інтеграція сама додає `DATABASE_URL`; бекенд перетворює її на `postgresql+asyncpg` і створює таблиці під час першого запиту.
 - **Файли:** вміст завантажених файлів лежить у базі (`files.content`), а розбір і індексація відбуваються одразу під час завантаження.
