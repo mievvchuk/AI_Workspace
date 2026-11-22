@@ -8,6 +8,20 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 LOCAL_ORIGIN = "http://localhost:5173"
 
+
+def normalize_database_url(url: str) -> str:
+    """Neon/Vercel hand out postgres://...?sslmode=require; SQLAlchemy's asyncpg driver wants
+    postgresql+asyncpg:// and takes TLS through connect_args, not libpq query parameters."""
+    if url.startswith("postgres://"):
+        url = "postgresql://" + url[len("postgres://"):]
+    if url.startswith("postgresql://"):
+        url = "postgresql+asyncpg://" + url[len("postgresql://"):]
+    if url.startswith("postgresql+asyncpg://") and "?" in url:
+        base, query = url.split("?", 1)
+        kept = [p for p in query.split("&") if p.split("=", 1)[0] not in {"sslmode", "channel_binding"}]
+        url = base + ("?" + "&".join(kept) if kept else "")
+    return url
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -44,15 +58,35 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def _hosted_origin(self) -> "Settings":
-        # On Render the service's own https URL is the origin for both the app and /api,
-        # so the Google redirect URI and the CORS origin follow the real domain unless set explicitly.
+        # The service's own https URL is the origin for both the app and /api, so the Google
+        # redirect URI and the CORS origin follow the real domain unless set explicitly.
         external = os.environ.get("RENDER_EXTERNAL_URL", "").rstrip("/")
+        if not external and os.environ.get("VERCEL"):
+            # Production uses the stable project domain; previews use their own deployment URL.
+            host = os.environ.get("VERCEL_PROJECT_PRODUCTION_URL") if os.environ.get("VERCEL_ENV") == "production" else None
+            host = host or os.environ.get("VERCEL_URL", "")
+            external = f"https://{host}" if host else ""
+            self.cookie_secure = True
+            if self.max_upload_mb > 4:
+                self.max_upload_mb = 4  # Vercel Functions reject request bodies over 4.5 MB
+            if self.upload_dir == BASE_DIR / "data" / "uploads":
+                self.upload_dir = Path("/tmp/uploads")  # the only writable path on Vercel
         if external:
             if self.public_api_url == LOCAL_ORIGIN:
                 self.public_api_url = external
             if self.frontend_origin == LOCAL_ORIGIN:
                 self.frontend_origin = external
+        self.database_url = normalize_database_url(self.database_url)
         return self
+
+    @property
+    def serverless(self) -> bool:
+        """Vercel Functions: no persistent disk, no work after the response, many short-lived instances."""
+        return bool(os.environ.get("VERCEL"))
+
+    @property
+    def is_postgres(self) -> bool:
+        return self.database_url.startswith("postgresql")
 
     @property
     def google_enabled(self) -> bool:

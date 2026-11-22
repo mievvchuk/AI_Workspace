@@ -40,6 +40,16 @@ npm run dev   # http://localhost:5173, /api проксіюється на :8000
 
 Потім на екрані **OAuth consent screen** опублікуйте застосунок (Publishing status: In production) або додайте свої акаунти в Test users, інакше Google пускатиме лише тестових користувачів. Скоупи `openid`, `email`, `profile` не потребують перевірки Google.
 
+## Деплой (Vercel)
+
+Фронтенд збирається в статику, а FastAPI працює як Vercel Function (`api/index.py`) на тому ж домені, тож cookies, CSRF і Google OAuth працюють без CORS. Постійного диска на Vercel немає, тому:
+
+- **База:** Postgres з Neon (Vercel Marketplace → Neon, безкоштовний тариф). Інтеграція сама додає `DATABASE_URL`; бекенд перетворює її на `postgresql+asyncpg` і створює таблиці під час першого запиту.
+- **Файли:** вміст завантажених файлів лежить у базі (`files.content`), а розбір і індексація відбуваються одразу під час завантаження.
+- **Ліміт файлу:** 4 МБ (Vercel приймає тіло запиту до 4,5 МБ); на фронтенді його задає `VITE_MAX_UPLOAD_MB=4`.
+- **Змінні середовища:** `NVIDIA_API_KEY`, `VITE_MAX_UPLOAD_MB=4`, за бажанням `GOOGLE_CLIENT_ID` і `GOOGLE_CLIENT_SECRET`. Адреса сайту для Google береться з `VERCEL_PROJECT_PRODUCTION_URL`.
+- Redirect URI для Google: `https://<проєкт>.vercel.app/api/auth/google/callback`.
+
 ## Деплой (Render)
 
 Один Docker-сервіс: FastAPI віддає API і зібраний фронтенд з одного домену, тому cookies, CSRF і вхід через Google працюють без CORS між доменами. SQLite і завантажені файли лежать на постійному диску `/var/data`.

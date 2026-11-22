@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from contextlib import asynccontextmanager
 
@@ -17,16 +18,38 @@ from .services.ai.provider import close_provider
 log = logging.getLogger("ai_workspace")
 
 
+_ready = False
+_ready_lock = asyncio.Lock()
+
+
+async def startup() -> None:
+    """Idempotent: run by the lifespan locally and by the first request on serverless,
+    where the platform may not deliver lifespan events."""
+    global _ready
+    if _ready:
+        return
+    async with _ready_lock:
+        if _ready:
+            return
+        settings = get_settings()
+        try:
+            settings.upload_dir.mkdir(parents=True, exist_ok=True)
+        except OSError:  # read-only filesystem; files live in the database
+            pass
+        await init_db()
+        async with SessionLocal() as db:
+            await purge_old_events(db, settings.ai_event_retention_days)
+            if not settings.serverless:
+                # replies that were streaming when the only server stopped can never finish;
+                # on serverless other instances may still be streaming them
+                await db.execute(update(Message).where(Message.status == "streaming").values(status="error", error="Генерацію перервано перезапуском сервера"))
+            await db.commit()
+        _ready = True
+
+
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    settings = get_settings()
-    settings.upload_dir.mkdir(parents=True, exist_ok=True)
-    await init_db()
-    async with SessionLocal() as db:
-        await purge_old_events(db, settings.ai_event_retention_days)
-        # replies that were streaming when the server stopped can never finish
-        await db.execute(update(Message).where(Message.status == "streaming").values(status="error", error="Генерацію перервано перезапуском сервера"))
-        await db.commit()
+    await startup()
     yield
     await close_provider()
 
@@ -39,6 +62,21 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+class StartupMiddleware:
+    """Plain ASGI (not BaseHTTPMiddleware), so SSE streams pass through untouched."""
+
+    def __init__(self, inner) -> None:
+        self.inner = inner
+
+    async def __call__(self, scope, receive, send) -> None:
+        if scope["type"] == "http":
+            await startup()
+        await self.inner(scope, receive, send)
+
+
+app.add_middleware(StartupMiddleware)
 
 
 @app.exception_handler(RequestValidationError)

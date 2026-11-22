@@ -6,7 +6,7 @@ from ..db import get_db
 from ..models import ChatSession, DevCategory, Message, Project, StoredFile, User
 from ..schemas import ActivityItem, CategoryIn, CategoryOut, FileOut, ProjectIn, ProjectOut, ProjectPatch
 from ..security import current_user
-from ..services.files import process_file, remove_file, store_upload
+from ..services.files import remove_file, schedule_processing, store_upload
 from .common import get_owned
 
 router = APIRouter(prefix="/api", tags=["dev"])
@@ -129,7 +129,7 @@ async def upload_project_file(
 ) -> StoredFile:
     await get_owned(db, Project, project_id, user.id, "Проєкт")
     record = await store_upload(db, user.id, file, project_id=project_id)
-    background.add_task(process_file, record.id)
+    await schedule_processing(background, db, record)
     return record
 
 
