@@ -1,0 +1,21 @@
+node_modules/
+dist/
+.venv/
+__pycache__/
+*.pyc
+backend/data/
+backend/.env
+frontend/qa/
+frontend/.playwright-mcp/
+.playwright-mcp/
+*.tsbuildinfo
+
+# local-only material
+.backup-before-coral/
+frontend/.taste-skill/
+frontend/shots/
+frontend/design-variants/
+.hallmark/
+frontend/.hallmark/
+.claude/settings.local.json
+*.log

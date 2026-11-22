@@ -1,0 +1,393 @@
+<!-- type: software (an AI study workspace; site-kind software)
+     deal: hero collage, nav nav-mega, close close-type, footer footer-columns, rhythm surface-pairs,
+     buttons arrow, mark ring, ground sand (the lit ground in the hero frame), grounds none, effect none
+     palette cool-grey-cobalt: the cool paper-grey ground and one cobalt accent read like lecture notes in blue ink
+     type plex (IBM Plex Sans + Mono): funnel was dealt first but has no Cyrillic for a Ukrainian page
+     moments: pinned-chapters in #how (the three steps from subject to answer, each with its real screen)
+     plan (screens at 1440x900): hero 1 · #workspace app-frame 1 · #features 2x2 2 · #how pinned-chapters 2 ·
+     #dev split-text-left 1 (surface band) · #faq 1 (surface band) · footer.closing 1 -->
+<header class="nav">
+  <div class="wrap nav__bar">
+    <a class="skip-link" href="#top">Перейти до змісту</a>
+    <a class="nav__logo" href="#top"><span class="mark" data-mark="ring" aria-hidden="true"></span>AI Workspace</a>
+    <nav class="nav__links" aria-label="Головне">
+      <div class="nav__item">
+        <a class="nav__link" href="#features">Навчання <svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav__menu">
+          <div class="wrap grid">
+            <div class="menu-col span-3">
+              <p class="t-label">Предмети</p>
+              <a href="#workspace">Чат<span>Відповіді з ваших лекцій</span></a>
+              <a href="#features">Матеріали<span>PDF, DOCX і код</span></a>
+              <a href="#features">Журнал AI<span>Кожен крок запиту</span></a>
+            </div>
+            <div class="menu-col span-3">
+              <p class="t-label">Підготовка</p>
+              <a href="#features">Лабораторні<span>Складність і запитання</span></a>
+              <a href="#features">Діагностика<span>Тест і звіт</span></a>
+            </div>
+            <a class="menu-card span-3 start-10" href="#how">
+              <div class="panel"><img loading="lazy" width="1030" height="644" class="frame__img" src="/assets/shots/step-materials.jpg" alt="Вкладка матеріалів предмета з лекціями та методичками"></div>
+              <span class="t-card">Три кроки до відповіді</span>
+              <span class="t-small muted">Предмет, матеріали, запитання</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="nav__item"><a class="nav__link" href="#how">Кроки</a></div>
+      <div class="nav__item"><a class="nav__link" href="#dev">Розробка</a></div>
+      <div class="nav__item"><a class="nav__link" href="#faq">Запитання</a></div>
+    </nav>
+    <div class="nav__actions">
+      <a class="nav__link" href="/login">Увійти</a>
+      <a class="btn btn--primary" href="/register">Створити простір</a>
+    </div>
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Меню">
+      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero hero--collage" data-enter aria-labelledby="hero-h">
+    <div class="wrap"><div class="hero-text grid hero__grid">
+      <div class="hero__text span-5">
+        <h1 id="hero-h">Навчальний простір з AI для студентів</h1>
+        <p class="hero__lead">Додайте предмети й лекції: асистент відповідатиме з ваших матеріалів, розбиратиме лабораторні й перевірятиме знання. Кожен його крок видно в журналі.</p>
+        <div class="btn-row"><a class="btn btn--primary" href="/register">Створити простір<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a><a class="btn btn--secondary" href="#how">Переглянути кроки</a></div>
+        <p class="hero__proof">Працює на 5 моделях NVIDIA NIM, типово Nemotron 3.5 Super VL.</p>
+      </div>
+      <div class="hero__art span-6 start-7" role="img" aria-label="Матеріали предмета «Машинне навчання» в AI Workspace і журнал запиту: пошук у трьох фрагментах лекції, міркування моделі, відповідь за 4,8 секунди">
+        <div class="ly-piece ly-piece--main d-win" aria-hidden="true">
+          <div class="d-win__bar"><span class="d-win__dots"><i></i><i></i><i></i></span><span>AI Workspace · Машинне навчання</span></div>
+          <div class="d-win__body">
+            <div class="d-side">
+              <span><i></i>Огляд</span><span class="is-on"><i></i>Матеріали</span><span><i></i>Лабораторні</span><span><i></i>Діагностика</span><span><i></i>Сесії</span>
+              <span class="d-side__label">Предмети</span><span><i></i>Бази даних</span><span><i></i>Кібербезпека</span>
+            </div>
+            <div class="d-main">
+              <div class="d-main__head"><h4>Матеріали</h4><span class="d-btn">Завантажити</span></div>
+              <div class="d-tabs"><span class="is-on">Усі 8</span><span>Лекції 4</span><span>Код 2</span></div>
+              <div class="d-rows">
+                <div class="d-row"><img width="32" height="32" class="d-ico" src="/assets/icons/pdf.svg" alt=""><div><b>lecture-3.pdf</b><small>Лекція 3 · 24 сторінки</small></div><span class="num">42</span><span class="d-chip">Готово</span></div>
+                <div class="d-row"><img width="32" height="32" loading="lazy" class="d-ico" src="/assets/icons/docx.svg" alt=""><div><b>lab-2-regression.docx</b><small>Методичка · 9 сторінок</small></div><span class="num">18</span><span class="d-chip">Готово</span></div>
+                <div class="d-row"><img width="32" height="32" loading="lazy" class="d-ico" src="/assets/icons/python.svg" alt=""><div><b>gradient.py</b><small>Код · 140 рядків</small></div><span class="num">6</span><span class="d-chip">Готово</span></div>
+                <div class="d-row"><img width="32" height="32" loading="lazy" class="d-ico" src="/assets/icons/pdf.svg" alt=""><div><b>lecture-4.pdf</b><small>Лекція 4 · 31 сторінка</small></div><span class="num">0</span><span class="d-chip d-chip--low">Індексація</span></div>
+                <div class="d-row"><img width="32" height="32" loading="lazy" class="d-ico" src="/assets/icons/md.svg" alt=""><div><b>notes.md</b><small>Конспект</small></div><span class="num">11</span><span class="d-chip">Готово</span></div>
+                <div class="d-row"><img width="32" height="32" loading="lazy" class="d-ico" src="/assets/icons/docx.svg" alt=""><div><b>lab-1-report.docx</b><small>Звіт · 6 сторінок</small></div><span class="num">9</span><span class="d-chip">Готово</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ly-piece ly-piece--note d-card" aria-hidden="true" data-ly-steps="700">
+          <div class="d-card__row"><h5>Журнал запиту</h5><span class="d-chip" data-step data-step-at="4">Збережено</span></div>
+          <div class="d-note__line" data-step><i>✓</i><span>Знайдено <b>3 фрагменти</b> в lecture-3.pdf</span></div>
+          <div class="d-note__line" data-step><i>✓</i><span>Модель міркувала: <b>1 240 токенів</b></span></div>
+          <div class="d-note__line" data-step><i>✓</i><span>Відповідь готова за <b>4,8 с</b></span></div>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="section" id="workspace" aria-labelledby="workspace-h">
+    <div class="wrap">
+      <div class="grid grid--top">
+        <h2 id="workspace-h" class="span-5">Чат, що відповідає з ваших лекцій</h2>
+        <p class="span-6 start-7">Ліворуч сесії за предметами, праворуч розмова. Під кожною відповіддю стоїть файл, з якого її взято. <a class="link" href="#how">Подивитися кроки</a></p>
+      </div>
+      <div class="ui app fill" role="img" aria-label="Список AI-сесій за предметами і відкрита розмова про learning rate з посиланням на lecture-3.pdf" data-ui-pause-host>
+        <div class="app__pane app__pane--list">
+          <div class="ui ui-panel ui-win" data-ui="window" data-open="Нове" data-work="Опрацьовується" data-done="Відповідь">
+            <div class="ui-win__bar">
+              <span class="ui-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="ui-win__crumb"><svg class="ui-brand" aria-hidden="true" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20zm0 5.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9z"/></svg>Навчання <i>/</i> <b>Сесії</b></span>
+              <span class="ui-spacer"></span>
+              <span class="ui-win__search" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg><span class="ui-win__ph">Пошук</span><span class="ui-kbd">K</span></span>
+            </div>
+            <div class="ui-win__body">
+              <nav class="ui-win__side" aria-hidden="true">
+                <span class="ui-win__nav is-on"><svg class="ui-icon" viewBox="0 0 16 16"><path d="M2.5 9h3l1 1.5h3l1-1.5h3"/><path d="M2.5 9 4 3.5h8L13.5 9v3.5h-11z"/></svg>Усі<em>14</em></span>
+                <span class="ui-win__nav"><svg class="ui-icon" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 1.5"/></svg>Сьогодні<em>3</em></span>
+                <span class="ui-win__nav"><svg class="ui-icon" viewBox="0 0 16 16"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg>Лабораторні<em>2</em></span>
+                <span class="ui-win__label">Предмети</span>
+                <span class="ui-win__nav"><span class="ui-win__hash">#</span>Машинне навчання</span>
+                <span class="ui-win__nav"><span class="ui-win__hash">#</span>Бази даних</span>
+              </nav>
+              <div class="ui-win__main">
+                <div class="ui-win__cols" aria-hidden="true"><span>Предмет</span><span>Запитання</span><span>Статус</span><span>Коли</span></div>
+                <ul class="ui-win__rows">
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">МН</span><span class="ui-win__who">Машинне навчання</span><span class="ui-win__sub">Як learning rate впливає на оверфітинг</span><span class="ui-win__st" data-st>Нове</span><span class="ui-win__age">2 хв</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="3">БД</span><span class="ui-win__who">Бази даних</span><span class="ui-win__sub">Нормалізуй таблицю замовлень до 3НФ</span><span class="ui-win__st" data-st>Нове</span><span class="ui-win__age">9 хв</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">КБ</span><span class="ui-win__who">Кібербезпека</span><span class="ui-win__sub">Чим XSS відрізняється від CSRF</span><span class="ui-win__st" data-st>Нове</span><span class="ui-win__age">14 хв</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">МН</span><span class="ui-win__who">Машинне навчання</span><span class="ui-win__sub">L2-регуляризація на прикладі</span><span class="ui-win__st is-done" data-st>Відповідь</span><span class="ui-win__age">1 год</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="5">КМ</span><span class="ui-win__who">Комп'ютерні мережі</span><span class="ui-win__sub">Рукостискання TCP по кроках</span><span class="ui-win__st is-done" data-st>Відповідь</span><span class="ui-win__age">2 год</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="2">UX</span><span class="ui-win__who">UI/UX дизайн</span><span class="ui-win__sub">Що перевірити в юзабіліті-тесті</span><span class="ui-win__st is-done" data-st>Відповідь</span><span class="ui-win__age">3 год</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="3">БД</span><span class="ui-win__who">Бази даних</span><span class="ui-win__sub">B-tree чи hash для пошуку за email</span><span class="ui-win__st is-done" data-st>Відповідь</span><span class="ui-win__age">вчора</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">ФЛ</span><span class="ui-win__who">Філософія</span><span class="ui-win__sub">Категоричний імператив коротко</span><span class="ui-win__st is-done" data-st>Відповідь</span><span class="ui-win__age">вчора</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="5">АП</span><span class="ui-win__who">Архітектура ПЗ</span><span class="ui-win__sub">CQRS для лабораторної 4</span><span class="ui-win__st is-done" data-st>Відповідь</span><span class="ui-win__age">вчора</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="app__pane app__pane--open" data-ui-loop>
+          <div class="ui ui-panel ui-chat" data-ui="chat">
+            <div class="ui-head">
+              <span class="ui-agent" aria-hidden="true"></span>
+              <div class="ui-title">Машинне навчання</div>
+              <span class="ui-chat__online">Nemotron 3.5 Super VL</span>
+              <span class="ui-spacer"></span>
+            </div>
+            <div class="ui-chat__body">
+              <div class="ui-chat__day">Сьогодні, 18:40</div>
+              <div class="ui-msg ui-msg--me" data-chat-q>
+                <span class="ui-msg__text">Як learning rate впливає на оверфітинг?</span>
+              </div>
+              <div class="ui-msg ui-msg--bot" data-chat-a>
+                <span class="ui-agent ui-msg__av" aria-hidden="true"></span>
+                <span class="ui-msg__col">
+                  <span class="ui-chat__typing" aria-hidden="true"><i></i><i></i><i></i></span>
+                  <span class="ui-chat__answer">Завеликий крок перестрибує мінімум, замалий збігається повільно й довше підлаштовується під шум. За лекцією 3 почніть з <b>0,01</b> і зменшуйте крок на плато.</span>
+                  <span class="ui-chat__srcs">
+                    <span class="ui-chat__src"><img width="32" height="32" loading="lazy" class="ui-brand" src="/assets/icons/pdf.svg" alt="">lecture-3.pdf, с. 14</span>
+                    <span class="ui-chat__src"><img width="32" height="32" loading="lazy" class="ui-brand" src="/assets/icons/docx.svg" alt="">lab-2-regression.docx</span>
+                  </span>
+                </span>
+              </div>
+              <div class="ui-msg ui-msg--me">
+                <span class="ui-msg__text">А що таке рання зупинка? Два речення.</span>
+              </div>
+            </div>
+            <div class="ui-chat__input">
+              <span class="ui-chat__ph">Запитайте про Машинне навчання</span>
+              <span class="ui-chat__send" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14"><path d="M8 13V3.5M3.8 7.5 8 3.3l4.2 4.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section g2" id="features" aria-labelledby="features-h">
+    <div class="wrap">
+      <div class="group">
+        <div class="section-head">
+          <h2 id="features-h">Чотири інструменти для навчання. <span class="muted">Від лекції до захисту.</span></h2>
+        </div>
+        <div class="grid">
+          <article class="card card--row card--open span-6">
+            <h3>Показує кожен крок запиту</h3>
+            <p>Журнал записує фактичні етапи запиту і відкривається навіть після перезавантаження.</p>
+            <div class="panel">
+              <div class="stage stage--fade-b"><div class="at-rise fit" style="--fit-max:340px;--ax:max(24px, 50% - 170px);--ay:calc(100% - 196px);--ay-sm:calc(100% - 196px)" data-ui-loop>
+                <div class="ui ui-panel ui-checks" data-ui="checklist">
+                  <div class="ui-checks__head">
+                    <div class="ui-title">Журнал запиту</div>
+                    <span class="ui-spacer"></span>
+                    <div class="ui-meta" data-checks-count>2 з 5</div>
+                  </div>
+                  <div class="ui-checks__bar"><i data-checks-bar style="--k:0.4"></i></div>
+                  <ul class="ui-checks__list">
+                    <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">Підготовка контексту</span></li>
+                    <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">Пошук у матеріалах: 3 фрагменти</span></li>
+                    <li class="ui-check"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">Модель міркує</span></li>
+                    <li class="ui-check"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">Генерація відповіді</span></li>
+                    <li class="ui-check"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">Збереження</span></li>
+                  </ul>
+                </div>
+              </div></div>
+            </div>
+          </article>
+          <article class="card card--row card--open span-6">
+            <h3>Читає лекції, методички й код</h3>
+            <p>PDF, DOCX, Markdown і код діляться на фрагменти, у яких асистент шукає відповідь.</p>
+            <div class="panel">
+              <div class="stage stage--fade-b"><div class="at-rise fit" style="--fit-max:420px;--ax:max(24px, 50% - 210px);--ay:48px;--ay-sm:24px">
+                <div class="ui ui-files" data-ui="files" data-reading="Читаю {n} з {total}">
+                  <div class="ui-files__status"><span class="ui-dot"></span><span data-files-status>6 файлів прочитано</span></div>
+                  <ul class="ui-files__grid">
+                    <li class="ui-file is-done"><span class="ui-file__icon"><img width="32" height="32" loading="lazy" src="/assets/icons/pdf.svg" alt=""></span><span class="ui-file__name">lecture-3.pdf</span><span class="ui-file__kind">PDF</span><span class="ui-file__bar"><i></i></span><span class="ui-file__check"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 8.2 2.3 2.3 4.7-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></li>
+                    <li class="ui-file is-done"><span class="ui-file__icon"><img width="32" height="32" loading="lazy" src="/assets/icons/docx.svg" alt=""></span><span class="ui-file__name">lab-2.docx</span><span class="ui-file__kind">Word</span><span class="ui-file__bar"><i></i></span><span class="ui-file__check"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 8.2 2.3 2.3 4.7-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></li>
+                    <li class="ui-file is-done"><span class="ui-file__icon"><img width="32" height="32" loading="lazy" src="/assets/icons/python.svg" alt=""></span><span class="ui-file__name">gradient.py</span><span class="ui-file__kind">Python</span><span class="ui-file__bar"><i></i></span><span class="ui-file__check"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 8.2 2.3 2.3 4.7-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></li>
+                    <li class="ui-file is-done"><span class="ui-file__icon"><img width="32" height="32" loading="lazy" src="/assets/icons/md.svg" alt=""></span><span class="ui-file__name">notes.md</span><span class="ui-file__kind">Markdown</span><span class="ui-file__bar"><i></i></span><span class="ui-file__check"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 8.2 2.3 2.3 4.7-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></li>
+                    <li class="ui-file is-done"><span class="ui-file__icon"><img width="32" height="32" loading="lazy" src="/assets/icons/pdf.svg" alt=""></span><span class="ui-file__name">lecture-4.pdf</span><span class="ui-file__kind">PDF</span><span class="ui-file__bar"><i></i></span><span class="ui-file__check"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 8.2 2.3 2.3 4.7-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></li>
+                    <li class="ui-file is-done"><span class="ui-file__icon"><img width="32" height="32" loading="lazy" src="/assets/icons/typescript.svg" alt=""></span><span class="ui-file__name">schema.ts</span><span class="ui-file__kind">TypeScript</span><span class="ui-file__bar"><i></i></span><span class="ui-file__check"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 8.2 2.3 2.3 4.7-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></li>
+                  </ul>
+                </div>
+              </div></div>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="grid">
+        <article class="card card--row card--open span-6">
+          <h3>Розбирає лабораторну до захисту</h3>
+          <p>Оцінює складність, показує прогалини та ймовірні запитання викладача.</p>
+          <div class="panel">
+            <div class="stage stage--fade-b"><div class="at-rise fit" style="--fit-max:400px;--ax:max(24px, 50% - 200px);--ay:48px;--ay-sm:24px">
+              <div class="ui ui-panel lab-mock" role="img" aria-label="Звіт про лабораторну 2: виконання 6 з 10, теорія 4 з 10, захист 8 з 10">
+                <div class="lab-mock__head"><span class="ui-title">Лабораторна 2. Лінійна регресія</span></div>
+                <div class="lab-mock__rows">
+                  <div class="lab-mock__row"><span>Виконання</span><span class="lab-mock__bar" style="--v:.6" data-tone="mid"><i></i></span><b>6/10</b></div>
+                  <div class="lab-mock__row"><span>Теорія</span><span class="lab-mock__bar" style="--v:.4" data-tone="low"><i></i></span><b>4/10</b></div>
+                  <div class="lab-mock__row"><span>Захист</span><span class="lab-mock__bar" style="--v:.8" data-tone="high"><i></i></span><b>8/10</b></div>
+                </div>
+                <div class="lab-mock__q"><span class="ui-meta">Прогалини</span>
+                  <ul><li>Не пояснено вибір learning rate 0,01</li><li>Немає графіка втрат на валідації</li></ul></div>
+                <div class="lab-mock__q"><span class="ui-meta">Ймовірні запитання на захисті</span>
+                  <ul><li>Чому MSE, а не MAE, для градієнтного спуску?</li><li>Що станеться, якщо не нормалізувати ознаки?</li><li>Як виявити оверфітинг на ваших даних?</li></ul></div>
+              </div>
+            </div></div>
+          </div>
+        </article>
+        <article class="card card--row card--open span-6">
+          <h3>Перевіряє знання перед іспитом</h3>
+          <p>Тест і відкриті запитання з поясненнями та підсумковим звітом.</p>
+          <div class="panel">
+            <div class="stage stage--fade-b"><div class="at-rise fit to-edge" style="--fit-max:400px;--ax:max(24px, 50% - 200px);--ay:48px;--ay-sm:24px">
+              <div class="ui ui-panel ui-stat" data-ui="stat" data-from="52" data-to="68" data-suffix="%" data-ui-opts='{"fill":true}'>
+                <div class="ui-stat__head">
+                  <div class="ui-stat__top">
+                    <span class="ui-stat__label">Градієнтний спуск</span>
+                    <span class="ui-stat__range">5 спроб</span>
+                  </div>
+                  <div class="ui-stat__line">
+                    <span class="ui-stat__num" data-stat-num>68%</span>
+                    <span class="ui-chip ui-chip--plain ui-stat__delta"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 9.5v-7M3 5.5l3-3 3 3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>16 п.</span>
+                    <span class="ui-stat__sub">від першої спроби</span>
+                  </div>
+                </div>
+                <div class="ui-stat__chart">
+                  <svg class="ui-stat__svg" viewBox="0 0 400 120" preserveAspectRatio="none" aria-hidden="true">
+                    <path class="ui-stat__grid" d="M0 30.5H400M0 60.5H400M0 90.5H400"/>
+                    <path class="ui-stat__cover" fill-rule="evenodd" d=""/>
+                    <g class="ui-stat__bars"><rect rx="3" x="0" y="57.6" width="64" height="62.4"/><rect rx="3" x="84" y="51.6" width="64" height="68.4"/><rect rx="3" x="168" y="45.6" width="64" height="74.4"/><rect rx="3" x="252" y="48" width="64" height="72"/><rect rx="3" x="336" y="38.4" width="64" height="81.6"/></g>
+                  </svg>
+                  <div class="ui-stat__axis" aria-hidden="true"><span>Спроба 1</span><span>Спроба 3</span><span>Сьогодні</span></div>
+                </div>
+              </div>
+            </div></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="how" style="--h: 2; --hm: 2" data-moment="pinned-chapters" aria-labelledby="how-h">
+    <div class="wrap mo-pc__grid">
+      <div class="mo-pc__text">
+        <h2 id="how-h">Від предмета до відповіді за три кроки</h2>
+        <ol class="mo-pc__steps">
+          <li class="mo-pc__step">
+            <h3>Додайте предмет</h3>
+            <p>Назва й опис. Значок підбирається сам з понад 40 навчальних категорій, і його можна змінити.</p>
+            <figure class="mo-pc__visual"><img src="/assets/shots/step-subject.jpg" alt="Діалог нового предмета з назвою, описом і підібраним значком" width="1030" height="644"></figure>
+          </li>
+          <li class="mo-pc__step">
+            <h3>Завантажте матеріали</h3>
+            <p>Лекції, методички й код. Після індексації вони стають контекстом для кожного запитання з цього предмета.</p>
+            <figure class="mo-pc__visual"><img src="/assets/shots/step-materials.jpg" alt="Вкладка матеріалів предмета з лекціями та методичками" width="1030" height="644"></figure>
+          </li>
+          <li class="mo-pc__step">
+            <h3>Питайте й перевіряйте</h3>
+            <p>Чат з посиланнями на джерела, розбір лабораторної та діагностика знань з підсумковим звітом.</p>
+            <figure class="mo-pc__visual"><img src="/assets/shots/step-chat.jpg" alt="Розмова з асистентом про learning rate з відповіддю і кодом" width="1030" height="644"></figure>
+          </li>
+        </ol>
+      </div>
+      <div class="mo-pc__visuals frame"></div>
+    </div>
+  </section>
+
+  <section class="section ground-surface" id="dev" aria-labelledby="dev-h">
+    <div class="wrap">
+      <div class="grid grid--top">
+        <div class="span-5 stack-5">
+          <h2 id="dev-h">Окремий простір для проєктів</h2>
+          <p class="t-lead">Проєкт має стек, файли й історію активності. AI-сесії проєкту бачать його код і відповідають з нього так само, як з лекцій.</p>
+          <ul class="dev-facts">
+            <li><img loading="lazy" src="/assets/icons/python.svg" alt="" width="24" height="24">Python, TypeScript і ще 15 мов</li>
+            <li><img loading="lazy" src="/assets/icons/nvidia.svg" alt="" width="60" height="12" class="ic-wide">Ключ NVIDIA лишається на сервері</li>
+          </ul>
+          <a class="link" href="#faq">Прочитати про безпеку</a>
+        </div>
+        <div class="frame frame--split span-6 start-7">
+          <div class="stage stage--fade-br"><div class="at-rise to-edge" style="--w:520px;--ax:max(24px, 50% - 260px);--ay:56px;--ay-sm:24px" data-ui-loop>
+            <div class="ui ui-panel ui-code" data-ui="code">
+              <div class="ui-code__tabs">
+                <span class="ui-code__tab is-on"><i class="ui-code__lang">PY</i>retrieval.py</span>
+                <span class="ui-code__tab"><i class="ui-code__lang">PY</i>models.py</span>
+                <span class="ui-spacer"></span>
+                <span class="ui-chip ui-chip--plain ui-code__chip" data-code-chip>правка</span>
+              </div>
+              <pre class="ui-code__pre"><code><span class="ui-code__ln" data-n="21"><span class="k">async def</span> <span class="f">search</span>(sid, q):</span>
+<span class="ui-code__ln" data-n="22">    chunks = <span class="k">await</span> <span class="f">load</span>(sid)</span>
+<span class="ui-code__ln" data-n="23" data-note="Порожній предмет повертає порожній список.">    <span class="k">if not</span> chunks: <span class="k">return</span> []</span>
+<span class="ui-code__ln is-mark" data-n="24">    top = <span class="f">rank</span>(chunks, q)[:<span class="n">3</span>]</span>
+<span class="ui-code__ln" data-n="25">    <span class="c"># крок іде в журнал</span></span>
+<span class="ui-code__ln" data-n="26" data-note="Записує в журнал, скільки фрагментів знайдено.">    log.<span class="f">step</span>(<span class="s">"search"</span>, <span class="f">len</span>(top))</span>
+<span class="ui-code__ln" data-n="27">    <span class="k">return</span> top</span></code></pre>
+              <div class="ui-code__hint" data-code-hint><span class="ui-dot"></span><span data-code-text>Додано: запис кроку пошуку в журнал.</span></div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section ground-surface" id="faq" aria-labelledby="faq-h">
+    <div class="wrap">
+      <div class="grid grid--top">
+        <div class="span-5 stack-5">
+          <h2 id="faq-h">Запитання про моделі й дані</h2>
+          <p class="faq-lede">Коротко про те, що працює без ключа і де лежать ваші файли.</p>
+          <div class="ui ui-panel models-mock" role="img" aria-label="Вибір моделі: п'ять моделей NVIDIA NIM, вибрано Nemotron 3.5 Super VL">
+            <div class="models-mock__head"><img loading="lazy" src="/assets/icons/nvidia.svg" alt="" width="60" height="12"><span class="ui-meta">Модель</span></div>
+            <ul>
+              <li class="is-on"><b>Nemotron 3.5 Super VL</b><span>типово</span></li>
+              <li><b>Nemotron 3 Ultra</b><span>складні задачі</span></li>
+              <li><b>Mistral Large 4</b><span>довгі тексти</span></li>
+              <li><b>Nemotron 3.5 Lightning</b><span>швидко</span></li>
+              <li><b>Nemotron 3 Nano Omni</b><span>легка</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="faq span-6 start-7">
+          <div class="faq__item"><h3>Які моделі доступні?</h3><p>П'ять моделей NVIDIA NIM, типово Nemotron 3.5 Super VL. Модель можна змінити в полі запиту.</p></div>
+          <div class="faq__item"><h3>Чи видно, що модель міркує?</h3><p>Видно етап і обсяг міркувань у токенах, але не їхній текст.</p></div>
+          <div class="faq__item"><h3>Що буде без ключа NVIDIA?</h3><p>Інтерфейс скаже, що AI не налаштовано. Предмети й матеріали працюють і так.</p></div>
+          <div class="faq__item"><h3>Хто бачить мої матеріали?</h3><p>Лише ви: доступ перевіряється до кожного предмета й файлу.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer closing" id="contact" aria-labelledby="close-h">
+  <div class="wrap">
+    <div class="closing__cta close--type">
+      <div class="section-head">
+        <h2 id="close-h">Почніть з першого предмета</h2>
+      </div>
+      <a class="btn btn--primary btn--xl btn--wide" href="/register">Створити простір<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+    </div>
+    <div class="closing__links">
+      <div class="grid">
+        <div class="span-4 stack-4">
+          <a class="nav__logo" href="#top"><span class="mark" data-mark="ring" aria-hidden="true"></span>AI Workspace</a>
+          <p class="footer__lede">Предмети, матеріали й AI в одному місці.</p>
+        </div>
+        <div class="span-2 footer__col"><h3>Навчання</h3><ul><li><a href="#workspace">Чат</a></li><li><a href="#features">Інструменти</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Кроки</h3><ul><li><a href="#how">Три кроки</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Розробка</h3><ul><li><a href="#dev">Проєкти</a></li><li><a href="#faq">Запитання</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Акаунт</h3><ul><li><a href="/login">Увійти</a></li><li><a href="/register">Реєстрація</a></li></ul></div>
+      </div>
+      <div class="footer__legal">
+        <span>&copy; 2026 AI Workspace</span>
+        <div class="socials"></div>
+        <span class="credits">Назви продуктів і логотипи належать їхнім власникам</span>
+      </div>
+    </div>
+  </div>
+</footer>
+

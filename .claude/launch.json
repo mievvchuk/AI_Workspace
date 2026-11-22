@@ -1,0 +1,25 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "api",
+      "runtimeExecutable": "D:\\Навчальна платформ\\backend\\.venv\\Scripts\\python.exe",
+      "runtimeArgs": ["-m", "uvicorn", "app.main:app", "--app-dir", "D:\\Навчальна платформ\\backend", "--port", "8000"],
+      "env": { "AI_PROVIDER": "nvidia", "DATABASE_URL": "sqlite+aiosqlite:///D:/Навчальна платформ/backend/data/demo.db" },
+      "port": 8000
+    },
+    {
+      "name": "api-demo",
+      "runtimeExecutable": "D:\\Навчальна платформ\\backend\\.venv\\Scripts\\python.exe",
+      "runtimeArgs": ["-m", "uvicorn", "app.main:app", "--app-dir", "D:\\Навчальна платформ\\backend", "--port", "8000"],
+      "env": { "AI_PROVIDER": "mock", "DATABASE_URL": "sqlite+aiosqlite:///D:/Навчальна платформ/backend/data/demo.db" },
+      "port": 8000
+    },
+    {
+      "name": "web",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "D:\\Навчальна платформ\\frontend", "run", "dev"],
+      "port": 5173
+    }
+  ]
+}
