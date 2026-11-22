@@ -57,7 +57,7 @@ export function AppShell() {
   return (
     <div className="app-ambient flex h-dvh overflow-hidden">
       <aside
-        className={cn("hidden shrink-0 border-r border-line bg-bg/60 backdrop-blur-xl transition-[width] duration-[240ms] ease-[var(--ease-out)] md:block", collapsed ? "w-14" : "w-[252px]")}
+        className={cn("sidebar-desk hidden shrink-0 border-r border-line transition-[width] duration-[240ms] ease-[var(--ease-out)] md:block", collapsed ? "w-14" : "w-[252px]")}
         aria-label="Навігація"
       >
         <div className={cn("h-full", collapsed ? "w-14" : "w-[252px]")}>

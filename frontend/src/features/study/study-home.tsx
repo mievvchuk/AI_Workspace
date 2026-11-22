@@ -25,7 +25,7 @@ function greeting() {
 function SubjectCard({ subject, onEdit, onDelete }: { subject: Subject; onEdit: () => void; onDelete: () => void }) {
   return (
     <motion.div variants={fadeUp} layout className="group relative">
-      <Link to={`/study/subjects/${subject.id}`} className="flex h-full min-h-[76px] flex-col rounded-xl border border-line bg-surface p-3.5 transition-[border-color,box-shadow] duration-200 hover:border-line-hover hover:shadow-[var(--glow)]">
+      <Link to={`/study/subjects/${subject.id}`} className="flex h-full min-h-[76px] flex-col rounded-lg stock stock-hover p-3.5">
         <div className="flex items-start gap-3">
           <SubjectEmoji emoji={subject.emoji} size="md" />
           <div className="min-w-0 flex-1 pr-6">
@@ -138,7 +138,7 @@ export function StudyHome() {
                 <div className="grid gap-8 lg:grid-cols-2">
                   {!!d?.open_labs.length && (
                     <Section title="Незавершені лабораторні">
-                      <ul className="divide-y divide-line rounded-lg border border-line bg-surface">
+                      <ul className="divide-y divide-line rounded-lg stock">
                         {d.open_labs.map((lab) => {
                           const s = d.subjects.find((x) => x.id === lab.subject_id);
                           return (
@@ -157,7 +157,7 @@ export function StudyHome() {
                   )}
                   {!!d?.recent_sessions.length && (
                     <Section title="Останні сесії">
-                      <ul className="divide-y divide-line rounded-lg border border-line bg-surface">
+                      <ul className="divide-y divide-line rounded-lg stock">
                         {d.recent_sessions.map((s) => (
                           <li key={s.id}>
                             <Link to={`/chat/${s.id}`} className="flex items-center gap-3 px-3 py-2.5 transition-colors hover:bg-hover/60">
@@ -172,7 +172,7 @@ export function StudyHome() {
                   )}
                   {!!d?.recent_diagnostics.length && (
                     <Section title="Останні діагностики">
-                      <ul className="divide-y divide-line rounded-lg border border-line bg-surface">
+                      <ul className="divide-y divide-line rounded-lg stock">
                         {d.recent_diagnostics.map((g) => (
                           <li key={g.id}>
                             <Link to={`/study/diagnostics/${g.id}`} className="flex items-center gap-3 px-3 py-2.5 transition-colors hover:bg-hover/60">
