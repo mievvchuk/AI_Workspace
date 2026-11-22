@@ -217,7 +217,7 @@ export function ChatView({ sessionId, contextLabel }: { sessionId: string; conte
               <p className="mt-1 text-sm text-muted">{contextLabel ? "Асистент шукатиме відповіді у матеріалах цього простору й покаже кожен крок обробки." : "Поставте запитання або прикріпіть файл."}</p>
               <div className="mt-6 flex flex-col gap-1.5">
                 {SUGGESTIONS.map((q) => (
-                  <button key={q} type="button" disabled={busy || !!noProvider} onClick={() => send(q, [])} className="rounded-lg border border-line bg-surface px-3 py-2 text-left text-sm text-muted transition-[border-color,color] duration-150 hover:border-line-hover hover:text-fg disabled:opacity-50">
+                  <button key={q} type="button" disabled={busy || !!noProvider} onClick={() => send(q, [])} className="rounded-lg stock stock-hover px-3 py-2 text-left text-sm text-muted hover:text-fg disabled:opacity-50">
                     {q}
                   </button>
                 ))}

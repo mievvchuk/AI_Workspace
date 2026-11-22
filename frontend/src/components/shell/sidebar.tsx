@@ -53,7 +53,7 @@ function WorkspaceSwitcher({ collapsed }: { collapsed: boolean }) {
     );
   }
   return (
-    <div role="tablist" aria-label="Робочий простір" className="relative grid grid-cols-2 rounded-lg border border-line bg-sunken p-0.5">
+    <div role="tablist" aria-label="Робочий простір" className="groove relative grid grid-cols-2 rounded-lg p-0.5">
       {items.map((i) => (
         <button
           key={i.value}
@@ -232,13 +232,13 @@ export function SidebarContent({ collapsed = false, onSearch, onNavigate }: { co
               type="button"
               disabled={newSession.isPending}
               onClick={() => newSession.mutate({ space: scope.space, subject_id: scope.subjectId, project_id: scope.projectId })}
-              className="flex h-8 flex-1 items-center gap-2 rounded-md border border-line bg-surface px-2.5 text-sm font-medium transition-[border-color,background-color] duration-150 hover:border-line-hover disabled:opacity-60"
+              className="stock stock-hover flex h-8 flex-1 items-center gap-2 rounded-md px-2.5 text-sm font-medium disabled:opacity-60"
             >
               <Plus className="size-3.5" />
               Нова сесія
             </button>
             <Tooltip content="Пошук і команди" shortcut="Ctrl K">
-              <button type="button" onClick={onSearch} aria-label="Пошук" className="flex h-8 w-8 items-center justify-center rounded-md border border-line bg-surface text-muted transition-colors hover:border-line-hover hover:text-fg">
+              <button type="button" onClick={onSearch} aria-label="Пошук" className="stock stock-hover flex h-8 w-8 items-center justify-center rounded-md text-muted hover:text-fg">
                 <Search className="size-3.5" />
               </button>
             </Tooltip>

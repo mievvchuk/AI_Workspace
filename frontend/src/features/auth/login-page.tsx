@@ -38,7 +38,7 @@ function ShowcasePanel() {
       </div>
       <div className="mt-auto p-8">
         <p className="max-w-[440px] text-[28px] leading-[34px] font-medium tracking-[-0.025em]">Асистент відповідає з ваших лекцій і показує кожен крок.</p>
-        <div className="mt-8 rounded-[12px] border border-line bg-surface p-5">
+        <div className="mt-8 rounded-lg stock p-5">
           <div className="flex items-center gap-2 text-sm">
             <Check className="size-4 text-success" strokeWidth={2.5} />
             <span className="font-medium">Опрацьовано</span>

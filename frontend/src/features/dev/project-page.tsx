@@ -63,7 +63,7 @@ export function ProjectPage() {
               <section>
                 <h2 className="mb-2 text-sm font-medium text-muted">AI-сесії</h2>
                 {sessions.isLoading ? <Skeleton className="h-20" /> : sessions.data?.length ? (
-                  <div className="space-y-px rounded-lg border border-line bg-surface p-1">{sessions.data.map((s) => <SessionItem key={s.id} session={s} layoutGroup={`project-${projectId}`} />)}</div>
+                  <div className="space-y-px rounded-lg stock p-1">{sessions.data.map((s) => <SessionItem key={s.id} session={s} layoutGroup={`project-${projectId}`} />)}</div>
                 ) : (
                   <div className="rounded-lg border border-dashed border-line-hover">
                     <EmptyState icon={<MessageSquare />} title="Сесій ще немає" description="Сесія проєкту автоматично шукає відповіді в його файлах." action={<Button size="sm" variant="outline" icon={<Plus className="size-3.5" />} onClick={() => newSession.mutate({ space: "dev", project_id: projectId })}>Почати сесію</Button>} />

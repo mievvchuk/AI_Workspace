@@ -117,7 +117,7 @@ export function DevHome() {
           ) : projects.isError ? (
             <ErrorState message={errorMessage(projects.error)} onRetry={() => projects.refetch()} />
           ) : list.length ? (
-            <motion.ul variants={stagger(0.03)} initial="hidden" animate="show" className="divide-y divide-line rounded-lg border border-line bg-surface">
+            <motion.ul variants={stagger(0.03)} initial="hidden" animate="show" className="divide-y divide-line rounded-lg stock">
               {list.map((p) => (
                 <motion.li key={p.id} variants={fadeUp} layout>
                   <Link to={`/dev/projects/${p.id}`} className="flex items-center gap-3 px-3.5 py-3 transition-colors hover:bg-hover/50">

@@ -163,7 +163,7 @@ export function AIProcessingPanel({ log, live = false, lastFrameAt, defaultOpen 
   const done = log.steps.filter((s) => s.status === "completed").length;
 
   return (
-    <div className={cn("w-full max-w-full overflow-hidden rounded-lg border border-line bg-surface", running && "border-accent/25", className)}>
+    <div className={cn("w-full max-w-full overflow-hidden rounded-lg stock", running && "border-accent/25", className)}>
       <div className="flex h-9 items-center gap-1 pr-1">
         <button
           type="button"
