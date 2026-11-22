@@ -4,7 +4,7 @@ import uuid
 from datetime import datetime
 from typing import Any
 
-from sqlalchemy import JSON, Boolean, DateTime, Float, ForeignKey, Integer, String, Text, UniqueConstraint
+from sqlalchemy import JSON, Boolean, DateTime, Float, ForeignKey, Integer, LargeBinary, String, Text, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .db import Base, utcnow
@@ -84,6 +84,9 @@ class StoredFile(Base):
     error: Mapped[str | None] = mapped_column(String(300))
     chunk_count: Mapped[int] = mapped_column(Integer, default=0)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    # The file itself, kept in the database so it survives hosts without a persistent disk.
+    # Deferred: lists and API responses never load it. NULL for files stored on disk earlier.
+    content: Mapped[bytes | None] = mapped_column(LargeBinary, deferred=True)
 
 
 class Chunk(Base):

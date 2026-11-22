@@ -25,7 +25,7 @@ from ..security import ai_rate_limit, current_user
 from ..services import emoji as emoji_service
 from ..services.ai.provider import ProviderError, get_provider
 from ..services.ai.registry import get_model
-from ..services.files import process_file, remove_file, store_upload
+from ..services.files import remove_file, schedule_processing, store_upload
 from ..services.lab_analysis import analyze_lab
 from .common import get_owned, require_ai_configured, sse_response
 
@@ -163,7 +163,7 @@ async def upload_subject_file(
 ) -> StoredFile:
     await get_owned(db, Subject, subject_id, user.id, "Предмет")
     record = await store_upload(db, user.id, file, subject_id=subject_id)
-    background.add_task(process_file, record.id)
+    await schedule_processing(background, db, record)
     return record
 
 
@@ -171,7 +171,7 @@ async def upload_subject_file(
 async def upload_loose_file(background: BackgroundTasks, file: UploadFile = File(...), user: User = Depends(current_user), db: AsyncSession = Depends(get_db)) -> StoredFile:
     """Chat attachments not bound to a subject/project."""
     record = await store_upload(db, user.id, file)
-    background.add_task(process_file, record.id)
+    await schedule_processing(background, db, record)
     return record
 
 
