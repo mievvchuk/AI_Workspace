@@ -1,4 +1,4 @@
-﻿"""Subject emoji suggestion.
+"""Subject emoji suggestion.
 
 1. normalize name/description
 2. match multi-word phrases, then word stems (uk + en)

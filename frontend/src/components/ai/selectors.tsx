@@ -1,4 +1,4 @@
-﻿import { Command } from "cmdk";
+import { Command } from "cmdk";
 import { Brain, Check, ChevronDown, Gauge, Search } from "lucide-react";
 import { useState } from "react";
 import { useModels, useUsage } from "@/lib/queries";
