@@ -1,9 +1,10 @@
 import { forwardRef, useId, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from "react";
 import { ChevronDown } from "lucide-react";
+import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 
 const control =
-  "w-full rounded-md border border-line bg-surface px-2.5 text-sm text-fg placeholder:text-subtle transition-[border-color,box-shadow] duration-150 hover:border-line-hover focus:border-accent focus:ring-3 focus:ring-ring/40 disabled:opacity-50 aria-[invalid=true]:border-danger";
+  "w-full rounded-md border border-line bg-surface px-2.5 text-sm text-fg placeholder:text-subtle transition-[border-color,box-shadow] duration-150 hover:border-line-hover focus:border-subtle focus:ring-3 focus:ring-accent/10 focus-visible:outline-none disabled:opacity-50 aria-[invalid=true]:border-danger";
 
 export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(function Input({ className, ...props }, ref) {
   return <input ref={ref} className={cn(control, "h-9", className)} {...props} />;
@@ -47,7 +48,7 @@ export function Field({ label, hint, error, children, optional }: { label: strin
 /** Segmented control for small exclusive choices. */
 export function Segmented<T extends string>({ value, onChange, options, label }: { value: T; onChange: (v: T) => void; options: { value: T; label: string; disabled?: boolean }[]; label: string }) {
   return (
-    <div role="radiogroup" aria-label={label} className="inline-flex rounded-md border border-line bg-sunken p-0.5">
+    <SegmentedGroup label={label}>{(pill) => (<>
       {options.map((o) => (
         <button
           key={o.value}
@@ -57,13 +58,23 @@ export function Segmented<T extends string>({ value, onChange, options, label }:
           disabled={o.disabled}
           onClick={() => onChange(o.value)}
           className={cn(
-            "h-7 rounded-[5px] px-2.5 text-sm transition-[background-color,color,box-shadow] duration-150 disabled:opacity-40",
-            value === o.value ? "bg-surface text-fg shadow-[var(--shadow-float)]" : "text-muted hover:text-fg",
+            "relative h-7 rounded-[5px] px-2.5 text-sm transition-colors duration-200 disabled:opacity-40",
+            value === o.value ? "text-fg" : "text-muted hover:text-fg",
           )}
         >
-          {o.label}
+          {value === o.value && <motion.span layoutId={pill} transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }} className="stock absolute inset-0 rounded-[5px]" />}
+          <span className="relative">{o.label}</span>
         </button>
       ))}
+    </>)}</SegmentedGroup>
+  );
+}
+
+function SegmentedGroup({ label, children }: { label: string; children: (pill: string) => ReactNode }) {
+  const pill = `seg-${useId()}`;
+  return (
+    <div role="radiogroup" aria-label={label} className="groove inline-flex rounded-md p-0.5">
+      {children(pill)}
     </div>
   );
 }

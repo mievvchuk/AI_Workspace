@@ -121,7 +121,7 @@ export function DevHome() {
               {list.map((p) => (
                 <motion.li key={p.id} variants={fadeUp} layout>
                   <Link to={`/dev/projects/${p.id}`} className="flex items-center gap-3 px-3.5 py-3 transition-colors hover:bg-hover/50">
-                    <div className="flex size-8 shrink-0 items-center justify-center rounded-md border border-line bg-sunken text-subtle"><FolderKanban className="size-4" /></div>
+                    <div className="flex size-8 shrink-0 items-center justify-center rounded-md stock text-subtle"><FolderKanban className="size-4" /></div>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
                         <span className="truncate text-sm font-medium">{p.name}</span>

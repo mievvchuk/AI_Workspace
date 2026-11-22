@@ -6,7 +6,7 @@ import { useSearchParams } from "react-router";
 import { api, errorMessage } from "@/lib/api";
 import { qk, queryClient, useLabs, useOwnerFiles } from "@/lib/queries";
 import type { Lab } from "@/lib/types";
-import { dur, t } from "@/lib/motion";
+import { dur, fadeUp, stagger, t } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { Button, IconButton } from "@/components/ui/button";
 import { Badge, EmptyState, ErrorState, Notice, Skeleton } from "@/components/ui/feedback";
@@ -87,7 +87,7 @@ function LabDetail({ lab, onBack }: { lab: Lab; onBack: () => void }) {
   const showLive = task.running || task.log.status !== "idle";
 
   return (
-    <motion.div key={lab.id} initial={{ opacity: 0, x: 8 }} animate={{ opacity: 1, x: 0 }} transition={t(dur.page)} className="min-w-0 space-y-5">
+    <motion.div key={lab.id} initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={t(0.6)} className="min-w-0 space-y-5">
       <div className="flex items-start gap-2">
         <IconButton label="До списку" className="-ml-1.5 lg:hidden" onClick={onBack}><ArrowLeft /></IconButton>
         <div className="min-w-0 flex-1">
@@ -135,18 +135,18 @@ export function LabsTab({ subjectId }: { subjectId: string }) {
       <div className={cn("min-w-0 space-y-2", selected && "hidden lg:block")}>
         <Button variant="outline" size="sm" className="w-full" icon={<Plus className="size-3.5" />} onClick={() => setCreating(true)}>Нова лабораторна</Button>
         {labs.data?.length ? (
-          <ul className="space-y-px">
+          <motion.ul variants={stagger(0.1)} initial="hidden" animate="show" className="space-y-1.5">
             {labs.data.map((lab) => (
-              <li key={lab.id}>
-                <button type="button" onClick={() => select(lab.id)} className={cn("flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-left transition-colors", lab.id === selectedId ? "bg-hover" : "hover:bg-hover/60")}>
+              <motion.li variants={fadeUp} key={lab.id}>
+                <button type="button" onClick={() => select(lab.id)} className={cn("flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-left transition-[background-color,box-shadow,transform] duration-200", lab.id === selectedId ? "stock" : "hover:bg-hover/60")}>
                   <FlaskConical className="size-3.5 shrink-0 text-subtle" />
                   <span className="min-w-0 flex-1 truncate text-sm">{lab.title}</span>
                   {lab.analysis && <span className="tabular text-2xs text-subtle" title="Складність виконання (AI-оцінка)">{lab.analysis.execution_difficulty}/10</span>}
                   <Badge tone={STATUS_TONE[lab.status]}>{STATUS_LABEL[lab.status]}</Badge>
                 </button>
-              </li>
+              </motion.li>
             ))}
-          </ul>
+          </motion.ul>
         ) : (
           <EmptyState icon={<FlaskConical />} title="Лабораторних ще немає" description="Додайте завдання, щоб оцінити складність і підготуватися до захисту." />
         )}
