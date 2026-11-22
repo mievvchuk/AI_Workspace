@@ -1,10 +1,10 @@
 import logging
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 from sqlalchemy import update
 
 from .config import get_settings
@@ -67,3 +67,19 @@ async def health() -> dict[str, str]:
 
 for router in (auth.router, study.router, dev.router, chat.router, diagnostics.router):
     app.include_router(router)
+
+
+# Production: the same service serves the built frontend, so cookies, CSRF and the
+# Google callback all live on one origin. Registered last so /api routes win.
+_dist = get_settings().static_dir
+if _dist and _dist.is_dir():
+    _root = _dist.resolve()
+
+    @app.get("/{path:path}", include_in_schema=False)
+    async def spa(path: str) -> FileResponse:
+        if path == "api" or path.startswith("api/"):
+            raise HTTPException(status.HTTP_404_NOT_FOUND, "Not found")
+        target = (_root / path).resolve()
+        if path and target.is_file() and _root in target.parents:
+            return FileResponse(target)
+        return FileResponse(_root / "index.html")

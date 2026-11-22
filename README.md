@@ -33,6 +33,30 @@ npm run dev   # http://localhost:5173, /api проксіюється на :8000
 
 Акаунт Google прив'язується до наявного користувача з тим самим підтвердженим email.
 
+Для продакшену в тому ж OAuth-клієнті додайте:
+
+- **Authorized JavaScript origins:** `https://<ваш-сервіс>.onrender.com`
+- **Authorized redirect URIs:** `https://<ваш-сервіс>.onrender.com/api/auth/google/callback`
+
+Потім на екрані **OAuth consent screen** опублікуйте застосунок (Publishing status: In production) або додайте свої акаунти в Test users, інакше Google пускатиме лише тестових користувачів. Скоупи `openid`, `email`, `profile` не потребують перевірки Google.
+
+## Деплой (Render)
+
+Один Docker-сервіс: FastAPI віддає API і зібраний фронтенд з одного домену, тому cookies, CSRF і вхід через Google працюють без CORS між доменами. SQLite і завантажені файли лежать на постійному диску `/var/data`.
+
+1. Запуште репозиторій на GitHub (гілка `main`).
+2. Render → **New → Blueprint** → оберіть репозиторій. Render прочитає `render.yaml` і попросить значення `NVIDIA_API_KEY`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` (Google можна лишити порожнім і додати пізніше).
+3. Після першого деплою адреса сервісу (`https://<ім'я>.onrender.com`) автоматично стає origin застосунку й основою redirect URI для Google (`RENDER_EXTERNAL_URL`). Явні `PUBLIC_API_URL` і `FRONTEND_ORIGIN` мають пріоритет, якщо підключите свій домен.
+
+Сервіс має працювати в одному екземплярі: SQLite і rate limit живуть у ньому самому.
+
+## Гілки (git flow)
+
+- `main` — те, що задеплоєно; кожен реліз має тег `vX.Y.Z`.
+- `develop` — інтеграційна гілка.
+- `feature/<назва>` — одна фіча, один коміт; вливається в `develop` через `--no-ff`.
+- `release/<версія>` — підготовка релізу, вливається в `main` (з тегом) і назад у `develop`.
+
 ## Перевірки
 
 ```powershell
