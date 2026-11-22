@@ -49,9 +49,16 @@ async def startup() -> None:
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    await startup()
+    # On serverless the first request runs startup (StartupMiddleware), so a missing or
+    # unreachable database fails that request with a clear message instead of the whole app.
+    if not get_settings().serverless:
+        await startup()
     yield
     await close_provider()
+
+
+# Paths that answer without the database, so the deployment can be checked before it has one.
+NO_DB_PATHS = {"/api/health", "/api/auth/config"}
 
 
 app = FastAPI(title="AI Workspace API", lifespan=lifespan)
@@ -71,8 +78,18 @@ class StartupMiddleware:
         self.inner = inner
 
     async def __call__(self, scope, receive, send) -> None:
-        if scope["type"] == "http":
-            await startup()
+        if scope["type"] == "http" and scope.get("path") not in NO_DB_PATHS:
+            try:
+                await startup()
+            except Exception:
+                settings = get_settings()
+                if settings.serverless and not settings.is_postgres:
+                    log.error("DATABASE_URL is not set: connect a Postgres database (Vercel Storage -> Neon) and redeploy")
+                else:
+                    log.exception("startup failed")
+                response = JSONResponse(status_code=503, content={"detail": "База даних недоступна. Спробуйте пізніше."})
+                await response(scope, receive, send)
+                return
         await self.inner(scope, receive, send)
 
 
