@@ -1,102 +1,185 @@
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import html from "./landing.html?raw";
 
 /**
- * The public landing page. Its markup is the taste-skill system's (landing.html); the system's own
- * stylesheets and scripts (public/assets) load only while this page is mounted, so they never touch
- * the app's screens. The system expects header, main, footer and the phone action bar straight under
- * body, so the page's nodes are moved there and removed again on unmount. Links out of the page are
- * plain anchors: leaving it is a full page load.
+ * The public landing page, Hallmark's Coral theme (design-variants/04-coral). Its stylesheet
+ * (public/landing/coral/page.css, which imports its own tokens and base) loads only while this
+ * page is mounted, so it never touches the app's screens. The page is light only. Links out of
+ * it are plain anchors: leaving it is a full page load.
+ *
+ * Motion: the effect below arms elements with data-m and adds .is-in as they enter the view.
+ * Without script nothing is armed and the page is fully visible; under reduced motion the CSS
+ * shows every end state at once.
  */
-const CSS = [
-  "/assets/system.css",
-  "/assets/ui/cards.css",
-  "/assets/motion/motion.css",
-  "/assets/backgrounds/backgrounds.css",
-  "/assets/layout/layout.css",
-  "/assets/layout/demo.css",
-  "/assets/icons/icon.css",
-  "/assets/ui/base.css",
-  "/assets/ui/window/fragment.css",
-  "/assets/ui/chat/fragment.css",
-  "/assets/ui/checklist/fragment.css",
-  "/assets/ui/files/fragment.css",
-  "/assets/ui/stat/fragment.css",
-  "/assets/ui/code/fragment.css",
-  "/landing/page.css",
-];
-const SCRIPTS = ["/assets/system.js", "/assets/motion/motion.js", "/assets/layout/layout.js"];
-const HTML_ATTRS: Record<string, string> = { "data-type": "software", "data-radius": "soft", "data-ground": "sand", "data-buttons": "arrow", "data-motion": "" };
+const CSS = "/landing/coral/page.css";
 
-declare global {
-  interface Window { __landingBooted?: boolean }
+function armMotion(root: HTMLElement): () => void {
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const cleanups: Array<() => void> = [];
+  const arm = (el: Element | null, kind = "") => {
+    if (!el) return null;
+    el.setAttribute("data-m", kind);
+    return el as HTMLElement;
+  };
+  const index = (els: Iterable<Element>, start = 0) => {
+    let i = start;
+    for (const el of els) (el as HTMLElement).style.setProperty("--i", String(i++));
+  };
+
+  // hero: in on the next frame
+  const hero = arm(root.querySelector(".hero"));
+  if (hero) {
+    index(hero.querySelectorAll(".hero__text > *"));
+    requestAnimationFrame(() => requestAnimationFrame(() => hero.classList.add("is-in")));
+  }
+
+  // one-shot entrances
+  const once = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        e.target.classList.add("is-in");
+        once.unobserve(e.target);
+        if (e.target.classList.contains("sheet")) countUp(e.target as HTMLElement);
+      }
+    },
+    { rootMargin: "0px 0px -12% 0px", threshold: 0.2 },
+  );
+  cleanups.push(() => once.disconnect());
+
+  const rise = [
+    ".map__head", ".pinned__panels > h2", ".sheet-sec__grid > div", ".faq h2", ".foot__word", ".board h2",
+  ];
+  for (const sel of rise) root.querySelectorAll(sel).forEach((el) => { arm(el, "rise"); once.observe(el); });
+  const faqRows = root.querySelectorAll(".faq__rows details");
+  index(faqRows);
+  faqRows.forEach((el) => { arm(el, "rise"); once.observe(el); });
+
+  const lanes = arm(root.querySelector(".lanes"));
+  if (lanes) {
+    lanes.querySelectorAll(".lane").forEach((lane, li) => index(lane.querySelectorAll(".node"), li * 2));
+    once.observe(lanes);
+  }
+
+  const sheet = arm(root.querySelector(".sheet"));
+  if (sheet) { index(sheet.querySelectorAll(".sheet__rows li")); once.observe(sheet); }
+
+  const shot = arm(root.querySelector(".pinned__img"));
+  if (shot) once.observe(shot);
+
+  const board = arm(root.querySelector(".board"));
+  if (board) once.observe(board);
+
+  // pinned: light the panel that sits mid-screen
+  const panelsBox = arm(root.querySelector(".pinned__panels"));
+  if (panelsBox) {
+    const panels = Array.from(panelsBox.querySelectorAll(".panel"));
+    panels[0]?.classList.add("is-current");
+    const mid = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          panels.forEach((p) => p.classList.toggle("is-current", p === e.target));
+        }
+      },
+      { rootMargin: "-45% 0px -45% 0px" },
+    );
+    panels.forEach((p) => mid.observe(p));
+    cleanups.push(() => mid.disconnect());
+  }
+
+  // the journal's timings count up as each row is written
+  function countUp(box: HTMLElement) {
+    if (reduced) return;
+    box.querySelectorAll<HTMLElement>(".sheet__rows .fig").forEach((fig, i) => {
+      const end = parseFloat((fig.textContent || "0").replace(",", "."));
+      if (!Number.isFinite(end) || end === 0) return;
+      const delay = 300 + i * 650;
+      const len = 650;
+      fig.textContent = "0,0 с";
+      let raf = 0;
+      const t0 = performance.now() + delay;
+      const tick = (now: number) => {
+        const k = Math.min(1, Math.max(0, (now - t0) / len));
+        fig.textContent = `${(end * (1 - Math.pow(1 - k, 3))).toFixed(1).replace(".", ",")} с`;
+        if (k < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+      cleanups.push(() => cancelAnimationFrame(raf));
+    });
+  }
+
+  // FAQ: answers open and close smoothly; a mouse click leaves no focus ring, the keyboard keeps it
+  root.querySelectorAll<HTMLDetailsElement>(".faq details").forEach((d) => {
+    const summary = d.querySelector("summary");
+    const answer = d.querySelector<HTMLElement>("p");
+    if (!summary || !answer) return;
+    let anim: Animation | null = null;
+    const ease = "cubic-bezier(0.16, 1, 0.3, 1)";
+    const onPointer = () => summary.setAttribute("data-pointer", "");
+    const onKey = () => summary.removeAttribute("data-pointer");
+    const onClick = (e: MouseEvent) => {
+      if (reduced) return;
+      e.preventDefault();
+      const from = d.offsetHeight;
+      anim?.cancel();
+      d.style.overflow = "hidden";
+      const opening = !d.open;
+      if (opening) d.open = true;
+      // the other end: the full height when opening, the summary plus the rules when closing
+      const to = opening ? d.offsetHeight : summary.offsetHeight + (d.offsetHeight - d.clientHeight);
+      anim = d.animate({ height: [`${from}px`, `${to}px`] }, { duration: opening ? 520 : 420, easing: ease });
+      answer.animate(
+        opening ? { opacity: [0, 1], transform: ["translateY(-14px)", "none"] } : { opacity: [1, 0], transform: ["none", "translateY(-8px)"] },
+        { duration: opening ? 520 : 260, easing: ease, fill: "both" },
+      );
+      anim.onfinish = () => {
+        if (!opening) d.open = false;
+        d.style.overflow = "";
+        anim = null;
+      };
+    };
+    summary.addEventListener("pointerdown", onPointer);
+    summary.addEventListener("keydown", onKey);
+    summary.addEventListener("click", onClick);
+    cleanups.push(() => {
+      summary.removeEventListener("pointerdown", onPointer);
+      summary.removeEventListener("keydown", onKey);
+      summary.removeEventListener("click", onClick);
+    });
+  });
+
+  return () => cleanups.forEach((c) => c());
 }
 
 export function LandingPage() {
+  const [ready, setReady] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
   useLayoutEffect(() => {
-    // The kit's modules run once per page load; a second visit within the SPA reloads the page.
-    if (window.__landingBooted) {
-      window.location.reload();
-      return;
-    }
     const root = document.documentElement;
-    const body = document.body;
-    const mount = document.getElementById("root");
     const prevTheme = root.dataset.theme;
-    for (const [k, v] of Object.entries(HTML_ATTRS)) root.setAttribute(k, v);
     root.dataset.theme = "light";
-    root.classList.add("m-enter", "mo-js");
-    body.style.visibility = "hidden";
-    // The React root holds nothing the landing shows; it takes no room after the footer.
-    if (mount) mount.style.display = "none";
-    const t1 = setTimeout(() => root.classList.add("m-enter-done"), 700);
-    const t2 = setTimeout(() => root.classList.add("mo-safe"), 2500);
+    root.classList.add("js");
 
-    // header.nav, main, footer.closing and nav.actionbar become children of body, before #root.
-    const tpl = document.createElement("template");
-    tpl.innerHTML = html;
-    const nodes = Array.from(tpl.content.children);
-    for (const n of nodes) body.insertBefore(n, mount);
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = CSS;
+    link.dataset.landing = "";
+    link.onload = link.onerror = () => setReady(true);
+    document.head.appendChild(link);
 
-    const links = CSS.map((href) => {
-      const l = document.createElement("link");
-      l.rel = "stylesheet";
-      l.href = href;
-      l.dataset.landing = "";
-      document.head.appendChild(l);
-      return new Promise<void>((res) => { l.onload = () => res(); l.onerror = () => res(); });
-    });
-    const grounds = document.createElement("script");
-    grounds.src = "/assets/backgrounds/backgrounds.js";
-    grounds.dataset.landing = "";
-    document.head.appendChild(grounds);
-
-    let alive = true;
-    Promise.all(links).then(() => {
-      if (!alive) return;
-      body.style.visibility = "";
-      if (window.__landingBooted) return;
-      window.__landingBooted = true;
-      for (const src of SCRIPTS) {
-        const s = document.createElement("script");
-        s.type = "module";
-        s.src = src;
-        body.appendChild(s);
-      }
-    });
     return () => {
-      alive = false;
-      clearTimeout(t1);
-      clearTimeout(t2);
-      for (const n of nodes) n.remove();
-      document.querySelectorAll("[data-landing]").forEach((n) => n.remove());
-      for (const k of Object.keys(HTML_ATTRS)) root.removeAttribute(k);
-      root.classList.remove("m-enter", "m-enter-done", "mo-js", "mo-safe");
-      body.style.visibility = "";
-      if (mount) mount.style.display = "";
+      link.remove();
+      root.classList.remove("js");
       if (prevTheme) root.dataset.theme = prevTheme;
     };
   }, []);
 
-  return null;
+  useLayoutEffect(() => {
+    if (!ready || !ref.current) return;
+    return armMotion(ref.current);
+  }, [ready]);
+
+  return <div ref={ref} style={ready ? undefined : { visibility: "hidden" }} dangerouslySetInnerHTML={{ __html: html }} />;
 }
