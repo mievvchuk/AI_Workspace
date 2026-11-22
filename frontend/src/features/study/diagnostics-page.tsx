@@ -14,6 +14,7 @@ import { Badge, ErrorState, Notice, Progress, Skeleton } from "@/components/ui/f
 import { Field, Input, Segmented, Select, Textarea } from "@/components/ui/field";
 import { AIProcessingPanel } from "@/components/ai/process-panel";
 import { useAITask } from "@/features/ai/use-ai-task";
+import { CountUp } from "@/components/ui/count-up";
 
 const DIFF_LABEL: Record<string, string> = { easy: "легке", medium: "середнє", hard: "складне", adaptive: "адаптивне" };
 
@@ -235,11 +236,11 @@ function Results({ diag }: { diag: Diagnostic }) {
       ] as const)
     : [];
   return (
-    <motion.div variants={stagger(0.06)} initial="hidden" animate="show" className="space-y-8">
+    <motion.div variants={stagger(0.12)} initial="hidden" animate="show" className="space-y-8">
       <motion.div variants={fadeUp} className="flex items-end gap-5">
         <div>
           <p className="text-xs text-muted">Підсумкова оцінка</p>
-          <p className={cn("tabular text-[44px] leading-none font-medium tracking-tight", tone)}>{score}%</p>
+          <p className={cn("tabular text-[44px] leading-none font-medium tracking-tight", tone)}><CountUp value={score} />%</p>
         </div>
         <div className="flex-1 pb-1.5">
           <Progress value={score} tone={score >= 75 ? "success" : score >= 50 ? "warning" : "danger"} className="h-1.5" label="Підсумкова оцінка" />

@@ -48,7 +48,7 @@ function ListBlock({ title, items, empty }: { title: string; items: string[]; em
 export function LabReport({ analysis, analyzedAt }: { analysis: LabAnalysis; analyzedAt: string | null }) {
   const [showQuestions, setShowQuestions] = useState(false);
   return (
-    <motion.div variants={stagger(0.06)} initial="hidden" animate="show" className="space-y-6">
+    <motion.div variants={stagger(0.12)} initial="hidden" animate="show" className="space-y-6">
       <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-2">
         <h3 className="text-sm font-medium">Звіт аналізу</h3>
         <Tooltip content="Показники згенеровані моделлю на основі опису та матеріалів, це не об'єктивне вимірювання">

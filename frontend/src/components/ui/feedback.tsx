@@ -1,3 +1,4 @@
+import { motion } from "motion/react";
 import { AlertTriangle, RotateCw } from "lucide-react";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
@@ -25,7 +26,7 @@ export function Progress({ value, tone = "accent", className, label }: { value: 
   const color = { accent: "bg-accent", success: "bg-success", warning: "bg-warning", danger: "bg-danger", muted: "bg-subtle" }[tone];
   return (
     <div role="progressbar" aria-label={label} aria-valuenow={Math.round(pct)} aria-valuemin={0} aria-valuemax={100} className={cn("h-1 w-full overflow-hidden rounded-full bg-hover", className)}>
-      <div className={cn("h-full origin-left rounded-full transition-transform duration-500 ease-out", color)} style={{ transform: `scaleX(${pct / 100})` }} />
+      <motion.div className={cn("h-full origin-left rounded-full", color)} initial={{ scaleX: 0 }} animate={{ scaleX: pct / 100 }} transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1], delay: 0.3 }} />
     </div>
   );
 }

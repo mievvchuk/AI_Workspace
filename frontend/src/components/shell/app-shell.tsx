@@ -1,7 +1,9 @@
 import { Menu as MenuIcon, X } from "lucide-react";
+import { motion } from "motion/react";
 import { useEffect, useState, type ReactNode } from "react";
 import { Outlet, useLocation } from "react-router";
 import { cn } from "@/lib/utils";
+import { pageIn } from "@/lib/motion";
 import { useUI } from "@/stores/ui";
 import { IconButton } from "@/components/ui/button";
 import { Drawer } from "@/components/ui/overlay";
@@ -71,7 +73,9 @@ export function AppShell() {
         <SidebarContent onSearch={() => { setMobileNav(false); setCmdOpen(true); }} onNavigate={() => setMobileNav(false)} />
       </Drawer>
       <main className="flex min-w-0 flex-1 flex-col">
-        <Outlet />
+        <motion.div key={location.pathname} {...pageIn} className="flex min-h-0 flex-1 flex-col">
+          <Outlet />
+        </motion.div>
       </main>
       <ContextPanelHost />
       <CommandMenu open={cmdOpen} onOpenChange={setCmdOpen} />

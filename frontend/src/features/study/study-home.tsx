@@ -5,7 +5,7 @@ import { Link, useNavigate, useSearchParams } from "react-router";
 import { api, errorMessage } from "@/lib/api";
 import { qk, queryClient, useDashboard, useMe } from "@/lib/queries";
 import type { Subject } from "@/lib/types";
-import { fadeUp, stagger } from "@/lib/motion";
+import { deal, fadeUp, stagger } from "@/lib/motion";
 import { plural, relativeTime } from "@/lib/utils";
 import { PageHeader } from "@/components/shell/app-shell";
 import { SubjectEmoji } from "@/components/shell/subject-emoji";
@@ -24,7 +24,7 @@ function greeting() {
 
 function SubjectCard({ subject, onEdit, onDelete }: { subject: Subject; onEdit: () => void; onDelete: () => void }) {
   return (
-    <motion.div variants={fadeUp} layout className="group relative">
+    <motion.div variants={deal} layout className="group relative">
       <Link to={`/study/subjects/${subject.id}`} className="flex h-full min-h-[76px] flex-col rounded-lg stock stock-hover p-3.5">
         <div className="flex items-start gap-3">
           <SubjectEmoji emoji={subject.emoji} size="md" />
@@ -104,12 +104,12 @@ export function StudyHome() {
       <PageHeader title="Навчання" actions={<Button size="sm" variant="primary" icon={<Plus className="size-3.5" />} onClick={() => setParams({ new: "1" })}>Предмет</Button>} />
       <div className="min-h-0 flex-1 overflow-y-auto">
         <div className="mx-auto max-w-[1040px] space-y-8 px-4 py-6 sm:px-6 sm:py-8">
-          <div>
+          <motion.div variants={fadeUp} initial="hidden" animate="show">
             <h1 className="text-[28px] leading-[34px] font-medium tracking-[-0.025em]">{greeting()}{me?.name ? <>, {me.name.split(" ")[0]}</> : ""}</h1>
             <p className="mt-0.5 text-sm text-muted">
               {d ? (d.subjects.length ? `${d.subjects.length} ${plural(d.subjects.length, "предмет", "предмети", "предметів")}${d.open_labs.length ? ` · ${d.open_labs.length} незавершених лабораторних` : ""}` : "Почніть з додавання першого предмета.") : " "}
             </p>
-          </div>
+          </motion.div>
 
           {dash.isError ? (
             <ErrorState message={errorMessage(dash.error)} onRetry={() => dash.refetch()} />
@@ -138,52 +138,52 @@ export function StudyHome() {
                 <div className="grid gap-8 lg:grid-cols-2">
                   {!!d?.open_labs.length && (
                     <Section title="Незавершені лабораторні">
-                      <ul className="divide-y divide-line rounded-lg stock">
+                      <motion.ul variants={stagger(0.12)} initial="hidden" animate="show" className="divide-y divide-line rounded-lg stock">
                         {d.open_labs.map((lab) => {
                           const s = d.subjects.find((x) => x.id === lab.subject_id);
                           return (
-                            <li key={lab.id}>
+                            <motion.li variants={fadeUp} key={lab.id}>
                               <Link to={`/study/subjects/${lab.subject_id}?tab=labs&lab=${lab.id}`} className="flex items-center gap-3 px-3 py-2.5 transition-colors hover:bg-hover/60">
                                 <FlaskConical className="size-3.5 shrink-0 text-subtle" />
                                 <span className="min-w-0 flex-1 truncate text-sm">{lab.title}</span>
                                 <span className="truncate text-2xs text-subtle">{s?.name}</span>
                                 {lab.status === "in_progress" && <Badge tone="accent">в роботі</Badge>}
                               </Link>
-                            </li>
+                            </motion.li>
                           );
                         })}
-                      </ul>
+                      </motion.ul>
                     </Section>
                   )}
                   {!!d?.recent_sessions.length && (
                     <Section title="Останні сесії">
-                      <ul className="divide-y divide-line rounded-lg stock">
+                      <motion.ul variants={stagger(0.12)} initial="hidden" animate="show" className="divide-y divide-line rounded-lg stock">
                         {d.recent_sessions.map((s) => (
-                          <li key={s.id}>
+                          <motion.li variants={fadeUp} key={s.id}>
                             <Link to={`/chat/${s.id}`} className="flex items-center gap-3 px-3 py-2.5 transition-colors hover:bg-hover/60">
                               <MessageSquare className="size-3.5 shrink-0 text-subtle" />
                               <span className="min-w-0 flex-1 truncate text-sm">{s.title}</span>
                               <span className="shrink-0 text-2xs text-subtle">{relativeTime(s.updated_at)}</span>
                             </Link>
-                          </li>
+                          </motion.li>
                         ))}
-                      </ul>
+                      </motion.ul>
                     </Section>
                   )}
                   {!!d?.recent_diagnostics.length && (
                     <Section title="Останні діагностики">
-                      <ul className="divide-y divide-line rounded-lg stock">
+                      <motion.ul variants={stagger(0.12)} initial="hidden" animate="show" className="divide-y divide-line rounded-lg stock">
                         {d.recent_diagnostics.map((g) => (
-                          <li key={g.id}>
+                          <motion.li variants={fadeUp} key={g.id}>
                             <Link to={`/study/diagnostics/${g.id}`} className="flex items-center gap-3 px-3 py-2.5 transition-colors hover:bg-hover/60">
                               <ClipboardCheck className="size-3.5 shrink-0 text-subtle" />
                               <span className="min-w-0 flex-1 truncate text-sm">{g.topic}</span>
                               <span className="tabular text-sm font-medium">{g.score != null ? `${Math.round(g.score)}%` : "—"}</span>
                               <ArrowRight className="size-3.5 text-subtle" />
                             </Link>
-                          </li>
+                          </motion.li>
                         ))}
-                      </ul>
+                      </motion.ul>
                     </Section>
                   )}
                 </div>
