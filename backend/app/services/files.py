@@ -5,8 +5,8 @@ import io
 import logging
 from pathlib import Path
 
-from fastapi import HTTPException, UploadFile, status
-from sqlalchemy import delete
+from fastapi import BackgroundTasks, HTTPException, UploadFile, status
+from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..config import get_settings
@@ -38,38 +38,53 @@ async def store_upload(
 ) -> StoredFile:
     data = await upload.read()
     name = validate_upload(upload, len(data))
-    settings = get_settings()
-    settings.upload_dir.mkdir(parents=True, exist_ok=True)
-    stored_name = new_id() + Path(name).suffix.lower()
-    await asyncio.to_thread((settings.upload_dir / stored_name).write_bytes, data)
     record = StoredFile(
         user_id=user_id,
         subject_id=subject_id,
         project_id=project_id,
         original_name=name,
-        stored_name=stored_name,
+        stored_name=new_id() + Path(name).suffix.lower(),
         mime=upload.content_type or "application/octet-stream",
         size=len(data),
         status="uploaded",
+        content=data,
     )
     db.add(record)
     await db.commit()
     return record
 
 
-def extract_text(path: Path) -> str:
-    ext = path.suffix.lower()
+async def schedule_processing(background: BackgroundTasks, db: AsyncSession, record: StoredFile) -> None:
+    """Parse and index after the response where the host allows it; on serverless, before it,
+    since an instance may be frozen as soon as the response is sent."""
+    if get_settings().serverless:
+        await process_file(record.id)
+        await db.refresh(record)
+    else:
+        background.add_task(process_file, record.id)
+
+
+def extract_text(name: str, data: bytes) -> str:
+    ext = Path(name).suffix.lower()
     if ext == ".pdf":
         from pypdf import PdfReader
 
-        reader = PdfReader(str(path))
+        reader = PdfReader(io.BytesIO(data))
         return "\n".join(page.extract_text() or "" for page in reader.pages)
     if ext == ".docx":
         import docx
 
-        document = docx.Document(io.BytesIO(path.read_bytes()))
+        document = docx.Document(io.BytesIO(data))
         return "\n".join(p.text for p in document.paragraphs)
-    return path.read_text(encoding="utf-8", errors="replace")
+    return data.decode("utf-8", errors="replace")
+
+
+async def _file_bytes(db: AsyncSession, record: StoredFile) -> bytes:
+    data = await db.scalar(select(StoredFile.content).where(StoredFile.id == record.id))
+    if data is not None:
+        return data
+    # files uploaded before content moved into the database
+    return await asyncio.to_thread((get_settings().upload_dir / record.stored_name).read_bytes)
 
 
 def chunk_text(text: str, size: int = CHUNK_CHARS) -> list[str]:
@@ -102,7 +117,8 @@ async def process_file(file_id: str) -> None:
         try:
             record.status = "parsing"
             await db.commit()
-            text = await asyncio.to_thread(extract_text, get_settings().upload_dir / record.stored_name)
+            data = await _file_bytes(db, record)
+            text = await asyncio.to_thread(extract_text, record.stored_name, data)
             if not text.strip():
                 raise ValueError("Не вдалося видобути текст із файлу")
             record.status = "indexing"

@@ -10,7 +10,8 @@ import { IconButton } from "@/components/ui/button";
 import { Progress } from "@/components/ui/feedback";
 
 export const ACCEPT = [".pdf", ".docx", ".txt", ".md", ".py", ".js", ".ts", ".tsx", ".jsx", ".java", ".c", ".cpp", ".cs", ".go", ".rs", ".sql", ".json", ".yaml", ".yml", ".html", ".css", ".csv"];
-export const MAX_MB = 20;
+/** Upload limit in MB; Vercel builds set VITE_MAX_UPLOAD_MB=4 (its request body limit is 4.5 MB). */
+export const MAX_MB = Number(import.meta.env.VITE_MAX_UPLOAD_MB ?? 20);
 
 export function validateFile(file: File): string | null {
   const ext = "." + (file.name.split(".").pop() ?? "").toLowerCase();
