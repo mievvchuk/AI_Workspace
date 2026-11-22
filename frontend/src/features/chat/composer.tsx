@@ -1,4 +1,4 @@
-﻿import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { ArrowUp, Loader2, Paperclip, Square, X } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState, type ClipboardEvent, type DragEvent, type KeyboardEvent } from "react";
 import type { Effort, ModelInfo } from "@/lib/types";

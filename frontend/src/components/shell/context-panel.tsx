@@ -1,4 +1,4 @@
-﻿import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { api, errorMessage } from "@/lib/api";
